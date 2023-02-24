@@ -36,7 +36,7 @@ export default function Sidebar() {
   const withIco = 30;
   const heightIco = 30;
 
-  const {isCollapsedSidebar, toogleSidebarCollapsedHandler} =
+  const { isCollapsedSidebar, toogleSidebarCollapsedHandler } =
     useContext(SidebarContext);
 
   return (
@@ -45,33 +45,42 @@ export default function Sidebar() {
         <FiArrowLeft />
       </button>
       <aside className="sidebar" data-collapsed={isCollapsedSidebar}>
-        <div className="sidebar__top">
-          <Image
-            src="/logo.png"
-            alt="logo"
-            width={80}
-            height={80}
-            className="sidebar__logo"
-          />
-          <p className="sidebar__logo-name">CM Garments</p>
+        <div className="sidebar__top justify-content-center">
+          <div className="sidebar__logo-name align-items-center py-2">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={90}
+              height={90}
+              className="sidebar__logo"
+            />
+            <h2 className="text-white sidebar__name">
+              <span className="d-block text-center">CM</span>
+              <span className="d-block text-center fs-6 fw-light">
+                Garments
+              </span>
+            </h2>
+          </div>
         </div>
-        <ul className="sidebar__list">
-          {sidebarItems.map((item) => (
-            <li className="sidebar__item" key={item.name}>
-              <Link href={item.href} className="sidebar__link">
-                <span className="sidebar__icon">
-                  <Image
-                    src={item.icon}
-                    alt={item.name}
-                    width={withIco}
-                    height={heightIco}
-                  />
-                </span>
-                <span className="sidebar__name">{item.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="container-sidebar d-flex align-items-center h-80">
+          <ul className="sidebar__list w-100">
+            {sidebarItems.map((item) => (
+              <li className="sidebar__item" key={item.name}>
+                <Link href={item.href} className="sidebar__link">
+                  <span className="sidebar__icon">
+                    <Image
+                      src={item.icon}
+                      alt={item.name}
+                      width={withIco}
+                      height={heightIco}
+                    />
+                  </span>
+                  <span className="sidebar__name">{item.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="sidebar__logout">
           <Link href="/" className="sidebar__link">
             <span className="sidebar__icon">

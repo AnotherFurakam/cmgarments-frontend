@@ -13,7 +13,6 @@ body {
 .layout {
   display: flex;
   height: 100vh;
-
 }
 
 .sidebar__wrapper {
@@ -21,29 +20,27 @@ body {
   height: 100%;
 }
 
-
 .sidebar {
-  width: 20rem;
   height: 100%;
   background-color: #111d13;
-  padding: 1rem 0 1rem 1rem;
+  width: 200px;
+  /* padding: 1rem 0 1rem 1rem; */
   transition: all 0.3s linear;
-  
 }
 
 .sidebar__top {
-  width: max-content;
+  /* width: max-content; */
   display: flex;
   align-content: center;
   gap: 1rem;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem;
   margin-bottom: 5rem;
-  margin-top: .5rem;
+  margin-top: .5rem; */
 }
 
 .sidebar__logo {
-  width: 3rem;
-  height: 3rem;
+  width: 3.2rem;
+  height: 3.2rem;
   object-fit: cover;
   border-bottom: 1rem;
 }
@@ -55,22 +52,23 @@ body {
 
 .sidebar__link {
   display: inline-block;
-  font-size: 1.4rem;
+  font-size: 17px;
   text-decoration: none;
   color: white;
   padding: 0.8rem 1rem;
   display: flex;
+  width: 100%;
   align-items: center;
   margin-bottom: 1rem;
 }
 
 .sidebar__link:hover {
   display: inline-block;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   text-decoration: none;
   color: #111d13;
   background: #e5dbdb;
-  padding: 0.8rem 1rem;
+  padding-right: 0;
   display: flex;
   margin-bottom: 1rem;
   border-radius: 1.5rem 0 0 1.5rem;
@@ -83,18 +81,18 @@ body {
 
 .sidebar__name {
   margin-left: 0.8rem;
-  font-family: 'Inter';
-  font-weight:600;
+  /* font-family: "Inter"; */
+  /* font-weight: 600; */
 }
 
 .sidebar__logo-name {
+  display: flex;
   font-size: 2rem;
   font-weight: 600;
   color: white;
-
 }
 
-.sidebar__logout{
+.sidebar__logout {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -120,12 +118,24 @@ body {
   transform: translate(50%);
 }
 
-[data-collapsed="true"] {
-  width: 6.5rem;
+.h-80 {
+  height: 80%;
 }
 
-[data-collapsed="true"] .sidebar__name,
+[data-collapsed="true"] {
+  width: 5.2rem;
+  padding-left: 5px;
+}
+
+.container-sidebar {
+  max-width: 200px;
+}
+
+/* [data-collapsed="true"] .sidebar__name,
 [data-collapsed="true"] .sidebar__logo-name {
   display: none;
-}
+} */
 
+[data-collapsed="true"] .sidebar__name {
+  display: none;
+}
