@@ -1,12 +1,14 @@
 import BaseLayout from "@/components/BaseLayout";
+import React from "react";
 
-export default function Home() {
+function products() {
   return (
     <BaseLayout>
       <div>
-        <h1>Dashboard</h1>
-      
+        <h1>Productos</h1>
       </div>
     </BaseLayout>
   );
 }
+
+export default products;
