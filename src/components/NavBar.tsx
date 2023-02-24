@@ -5,7 +5,7 @@ interface Props {
   name: string;
   role: string;
   surnames?: string;
-  photoUrl? : string
+  photoUrl? : any
 }
 
 function NavBar({ name, surnames, role, photoUrl }: Props) {
