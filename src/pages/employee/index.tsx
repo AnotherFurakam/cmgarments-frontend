@@ -9,7 +9,6 @@ import { FaPlus } from "react-icons/fa";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Employee/Form";
 
-
 const colums = {
   names: "Nombre",
   first_lastname: "Apellidos",
@@ -38,12 +37,40 @@ function Employee() {
   const [selectEmployee, setSelectEmployee] =
     useState<IEmployee>(initialValues);
 
+  const cleanEmployee = (employee: IEmployee[]) => {
+    const newEmployee = employee.map((e) => {
+      const id_employee = e.id_employee;
+      const names = e.names;
+      const first_lastname = e.first_lastname;
+      const second_lastname = e.second_lastname;
+      const dni = e.dni;
+      const phone_number = e.phone_number;
+      const email = e.email;
+      const date_birth = e.date_birth;
+      const role = e.role?.title;
+
+      return {
+        id_employee,
+        names,
+        first_lastname,
+        second_lastname,
+        dni,
+        phone_number,
+        email,
+        date_birth,
+        role,
+      };
+    });
+
+    setEmployees(newEmployee);
+  };
+
   // Obtener todos los empleados:
   const getEmployees = async (): Promise<void> => {
     const employees = await employeeService.getAll();
     console.log(employees.data);
 
-    setEmployees(employees.data);
+    cleanEmployee(employees.data);
   };
 
   //Funcion para cerrar modal

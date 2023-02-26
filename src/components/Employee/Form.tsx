@@ -4,7 +4,7 @@ import { category } from "@/services/category.service";
 import { employeeService } from "@/services/employee.service";
 import { CategoryFormSchema } from "@/validations/category.validation";
 import { EmployeeFormSchema } from "@/validations/employee.validation";
-import { Formik, FormikHelpers, FormikProps } from "formik";
+import { Field, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import React from "react";
 import Swal from "sweetalert2";
@@ -35,7 +35,7 @@ export const Form: React.FC<FormInterface> = ({
     helpers: FormikHelpers<IEmployee>
   ) => {
     // console.log("Hola como estas");
-    // console.log(values);
+    console.log(values);
 
     if (type === "CREATE") {
       await employeeService
@@ -105,10 +105,10 @@ export const Form: React.FC<FormInterface> = ({
                 <InputText
                   id="names"
                   type="text"
-                  name="name"
+                  name="names"
                   placeholder="Escriba el nombre"
                 />
-                <FormErrorMessage name="name" component={"p"} />
+                <FormErrorMessage name="names" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="first_lastname" className="fw-semibold pb-2">
@@ -119,7 +119,7 @@ export const Form: React.FC<FormInterface> = ({
                   name="first_lastname"
                   placeholder="Escriba su apellido paterno"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="first_lastname" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="second_lastname" className="fw-semibold pb-2">
@@ -130,7 +130,7 @@ export const Form: React.FC<FormInterface> = ({
                   name="second_lastname"
                   placeholder="Escriba su apellido materno"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="second_lastname" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="dni" className="fw-semibold pb-2">
@@ -141,7 +141,7 @@ export const Form: React.FC<FormInterface> = ({
                   name="dni"
                   placeholder="Escriba su apellido materno"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="dni" component={"p"} />
               </div>
             </div>
             <div className="col-md-6">
@@ -154,7 +154,7 @@ export const Form: React.FC<FormInterface> = ({
                   name="phone_number"
                   placeholder="Escriba su apellido materno"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="phone_number" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="email" className="fw-semibold pb-2">
@@ -165,7 +165,7 @@ export const Form: React.FC<FormInterface> = ({
                   name="email"
                   placeholder="Escriba su apellido materno"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="email" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="date_birth" className="fw-semibold pb-2">
@@ -176,17 +176,24 @@ export const Form: React.FC<FormInterface> = ({
                   name="date_birth"
                   placeholder="Escriba su fecha de nacimiento"
                 />
-                <FormErrorMessage name="sizes" component={"p"} />
+                <FormErrorMessage name="date_birth" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="role" className="fw-semibold pb-2">
                   Fecha de nacimiento
                 </label>
-                <select className="form-select">
-                  <option value="" key="">Administrador</option>
-                  <option value="" key="">Empleado</option>
-                </select>
-                <FormErrorMessage name="sizes" component={"p"} />
+
+                <Field name="id_role" as="select">
+                  <option value="">-- Selecciona una rol --</option>
+                  <option value="8c388770-a5ba-4052-bb30-aac1ea5a1c8c">
+                    Administrador
+                  </option>
+                  <option value="dcc92266-73d4-478d-8e5c-819ca1bf9e64">
+                    Empleado
+                  </option>
+                </Field>
+
+                <FormErrorMessage name="id_role" component={"p"} />
               </div>
             </div>
           </div>

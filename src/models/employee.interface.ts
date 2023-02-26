@@ -15,6 +15,7 @@ export interface IEmployee {
   phone_number: string;
   email: string;
   date_birth: string;
-  state: boolean;
+  state?: boolean;
   role?: any;
+  id_role?: string;
 }
