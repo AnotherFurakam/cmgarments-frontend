@@ -7,7 +7,7 @@ export interface IGetAll {
 }
 
 export interface IEmployee {
-  id_employee: string;
+  id_employee?: string;
   names: string;
   first_lastname: string;
   second_lastname: string;

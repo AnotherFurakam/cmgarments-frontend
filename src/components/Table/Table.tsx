@@ -61,7 +61,7 @@ const Table: React.FC<TableInterface> = ({
   };
 
   return (
-    <TableContainer>
+    <TableContainer className="table-responsive" >
       <Tabule>
         <TableHead>
           <tr>
@@ -84,8 +84,8 @@ const Table: React.FC<TableInterface> = ({
                           <p className="m-0 text-truncate fw-semibold">
                             {typeof Object.values<any>(d)[i] === "boolean"
                               ? Object.values<any>(d)[i] === true
-                                ? "SI"
-                                : "No"
+                                ? "Habilitado"
+                                : "Deshabilitado"
                               : Object.values<any>(d)[i]}
                           </p>
                         </td>
