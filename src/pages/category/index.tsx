@@ -3,6 +3,11 @@ import React, { useEffect, useState } from "react";
 import { ICategory } from "@/models/category.interface";
 import { category } from "@/services/category.service";
 import { Table } from "@/components/Table";
+import Image from "next/image";
+import { FaPlus } from "react-icons/fa";
+import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
+import { Modal } from "@/components/Modal";
+import { Form } from "@/components/Category/Form";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -12,17 +17,45 @@ const colums = {
   sizes: "Tallas",
 };
 
+const initialValues: ICategory = {
+  name: "",
+  sizes: "",
+};
+
 function Category() {
+  // estado de categorias y modal
   const [categories, setCategories] = useState<ICategory[] | null>(null);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<ICategory>(initialValues);
+
+  // obtener categorias
+  const getCategories = async (): Promise<void> => {
+    const categories = await category.getAll();
+    // console.log(categories.data);
+
+    setCategories(categories.data);
+  };
+
+  // funcion para cerra el modal
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+    if (selectedCategory.id_category) setSelectedCategory(initialValues);
+  };
+
+  const handleOpenModal = (): void => {
+    setIsOpenModal(true);
+  };
+
+  const handleEditLocal = (id: string): void => {
+    const category = categories?.find((c) => c.id_category === id);
+    setSelectedCategory(category || initialValues);
+    console.log(category);
+
+    handleOpenModal();
+  };
 
   useEffect(() => {
-    const getCategories = async (): Promise<void> => {
-      const categories = await category.getAll();
-      // console.log(categories.data);
-
-      setCategories(categories.data);
-    };
-
     getCategories();
   }, []);
 
@@ -30,8 +63,25 @@ function Category() {
     <BaseLayout>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
-          <h1 className="fw-bold fs-3">Categoria</h1>
           <div className="py-4 px-5">
+            <div className="d-flex justify-content-between mt-2 mb-4">
+              <div className="d-flex align-items-center">
+                <Image
+                  src="/images/png/category-select.png"
+                  alt="Categoría"
+                  width={60}
+                  height={60}
+                  className="me-3 img-fluid"
+                />
+                <h1 className="fw-bold fs-3">Categoria</h1>
+              </div>
+              <div className="d-flex align-items-center">
+                <ButtonAddStyle type="button" onClick={handleOpenModal}>
+                  <span className="d-d-inline-block me-3">Agregar</span>
+                  <FaPlus />
+                </ButtonAddStyle>
+              </div>
+            </div>
             <Table
               data={categories}
               colums={colums}
@@ -39,9 +89,23 @@ function Category() {
               customButton={false}
               customButtonTitle={""}
               customFunction={() => {}}
-              editFunction={() => {}}
+              editFunction={handleEditLocal}
               deleteFunction={() => {}}
             />
+            <Modal
+              title="Categoría"
+              type={selectedCategory.id_category ? "UPDATE" : "CREATE"}
+              isOpen={isOpenModal}
+              handleCloseModal={handleCloseModal}
+            >
+              <Form
+                type={selectedCategory.id_category ? "UPDATE" : "CREATE"}
+                title="Categoría"
+                data={selectedCategory}
+                handleCloseModal={handleCloseModal}
+                getCategories={getCategories}
+              />
+            </Modal>
           </div>
         </div>
       </div>

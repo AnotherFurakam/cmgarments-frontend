@@ -11,7 +11,12 @@ function BaseLayout({ children }: Props) {
     <div className="layout">
       <Sidebar />
       <div className="content">
-        <NavBar name="David" role="Admin" surnames="Samamé" photoUrl="/photoprofile.png"/>
+        <NavBar
+          name="Wilmer"
+          role="Admin"
+          surnames="Reluz"
+          photoUrl="/photoprofile.png"
+        />
         {children}
       </div>
     </div>
