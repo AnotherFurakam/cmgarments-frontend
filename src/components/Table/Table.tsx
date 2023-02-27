@@ -47,11 +47,6 @@ const Table: React.FC<TableInterface> = ({
     }).then((result) => {
       if (result.isConfirmed) {
         deleteFunction(id);
-        Swal.fire(
-          "Eliminado!",
-          "El registro fue eliminado con éxito",
-          "success"
-        );
       }
     });
   };
@@ -61,13 +56,15 @@ const Table: React.FC<TableInterface> = ({
   };
 
   return (
-    <TableContainer className="table-responsive" >
+    <TableContainer>
       <Tabule>
         <TableHead>
           <tr>
             {colums &&
               Object.values(colums).map((column: any, index) => (
-                <th key={index}>{column}</th>
+                <th className="px-2" key={index}>
+                  {column}
+                </th>
               ))}
             <th>OPCIONES</th>
           </tr>
@@ -81,11 +78,11 @@ const Table: React.FC<TableInterface> = ({
                     return (
                       Object.keys(colums).find((nc) => nc === k) && (
                         <td key={i}>
-                          <p className="m-0 text-truncate fw-semibold">
+                          <p className="m-0 text-truncate fw-semibold px-2">
                             {typeof Object.values<any>(d)[i] === "boolean"
                               ? Object.values<any>(d)[i] === true
-                                ? "Habilitado"
-                                : "Deshabilitado"
+                                ? "SI"
+                                : "No"
                               : Object.values<any>(d)[i]}
                           </p>
                         </td>

@@ -16,7 +16,6 @@ const TableHead = styled.thead`
       font-size: 18px;
       padding: 20px 0;
       text-align: center;
-      min-width: 200px;
     }
   }
 `;
