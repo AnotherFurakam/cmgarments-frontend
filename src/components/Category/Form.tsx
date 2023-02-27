@@ -130,7 +130,7 @@ export const Form: React.FC<FormInterface> = ({
           </div>
           <div className="d-flex justify-content-center">
             <SubmitButton type="submit" disabled={isSubmitting}>
-              Registrar
+              Guardar
             </SubmitButton>
           </div>
         </FormStyled>

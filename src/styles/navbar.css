@@ -1,9 +1,14 @@
 .content {
   width: 100%;
+  padding-left: 200px;
+  transition: all 0.3s linear;
+}
+
+.content-padding {
+  padding-left: 78.188px;
 }
 
 .bg-maim {
   background-color: #111d13;
-  color: white
+  color: white;
 }
-

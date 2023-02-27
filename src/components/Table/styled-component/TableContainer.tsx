@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const TableContainer = styled.div`
-  width: 100%;
+  /* width: 80%; */
+  /* margin: 0; */
   min-height: 601px;
   border-radius: 10px;
   /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */

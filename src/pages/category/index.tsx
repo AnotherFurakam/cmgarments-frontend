@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Category/Form";
+import Swal from "sweetalert2";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -47,12 +48,31 @@ function Category() {
     setIsOpenModal(true);
   };
 
-  const handleEditLocal = (id: string): void => {
+  const handleEditCategory = (id: string): void => {
     const category = categories?.find((c) => c.id_category === id);
     setSelectedCategory(category || initialValues);
     console.log(category);
 
     handleOpenModal();
+  };
+
+  const handleDeleteCategory = async (id: string): Promise<void> => {
+    await category
+      .delete(id)
+      .then((res) => {
+        Swal.fire(
+          "Eliminado!",
+          "El registro fue eliminado con éxito",
+          "success"
+        );
+        getCategories();
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.message,
+          icon: "error",
+        });
+      });
   };
 
   useEffect(() => {
@@ -89,8 +109,8 @@ function Category() {
               customButton={false}
               customButtonTitle={""}
               customFunction={() => {}}
-              editFunction={handleEditLocal}
-              deleteFunction={() => {}}
+              editFunction={handleEditCategory}
+              deleteFunction={handleDeleteCategory}
             />
             <Modal
               title="Categoría"

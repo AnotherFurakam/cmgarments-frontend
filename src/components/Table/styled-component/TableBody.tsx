@@ -6,8 +6,6 @@ const TableBody = styled.tbody`
     & td {
       padding: 16px 0;
       text-align: center;
-      min-width: 200px;
-      max-width: 500px;
     }
   }
 `;
