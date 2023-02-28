@@ -8,6 +8,7 @@ import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { FaPlus } from "react-icons/fa";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Employee/Form";
+import Swal from "sweetalert2";
 
 const colums = {
   names: "Nombre",
@@ -28,7 +29,6 @@ const initialValues: IEmployee = {
   email: "",
   date_birth: "",
   state: true,
-  role: "",
 };
 
 function Employee() {
@@ -47,6 +47,7 @@ function Employee() {
       const phone_number = e.phone_number;
       const email = e.email;
       const date_birth = e.date_birth;
+      const state = e.state ? "Habilitado" : "Deshabilitado";
       const role = e.role?.title;
 
       return {
@@ -58,6 +59,7 @@ function Employee() {
         phone_number,
         email,
         date_birth,
+        state,
         role,
       };
     });
@@ -68,7 +70,7 @@ function Employee() {
   // Obtener todos los empleados:
   const getEmployees = async (): Promise<void> => {
     const employees = await employeeService.getAll();
-    console.log(employees.data);
+    //console.log(employees.data);
 
     cleanEmployee(employees.data);
   };
@@ -89,6 +91,25 @@ function Employee() {
     console.log(employee);
 
     handleOpenModal();
+  };
+
+  const handleDeleteEmployee = async (id: string): Promise<void> => {
+    await employeeService
+      .delete(id)
+      .then((res) => {
+        Swal.fire(
+          "Eliminado!",
+          "El registro fue eliminado con éxito",
+          "success"
+        );
+        getEmployees();
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.message,
+          icon: "error",
+        });
+      });
   };
 
   useEffect(() => {
@@ -126,7 +147,7 @@ function Employee() {
               customButtonTitle={""}
               customFunction={() => {}}
               editFunction={handleEditLocal}
-              deleteFunction={() => {}}
+              deleteFunction={handleDeleteEmployee}
             />
             <Modal
               title="Empleado"
