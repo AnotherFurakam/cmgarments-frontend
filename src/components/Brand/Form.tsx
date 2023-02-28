@@ -49,7 +49,7 @@ export const Form: React.FC<FormInterface> = ({
         .catch((err) => {
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.message,
+            text: err.response.data.message,
             icon: "error",
           });
         });

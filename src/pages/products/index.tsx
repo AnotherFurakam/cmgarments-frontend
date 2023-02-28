@@ -42,7 +42,22 @@ const initialValues: IProduct = {
   state: false,
 };
 
+interface ICleanProduct {
+    id_product?: string;
+    name: string;
+    size: string;
+    color: string;
+    price: number;
+    stock: number;
+    gender: string;
+    description: string;
+    state?: string;
+    id_brand?: string;
+    id_category? : string;
+  }
+
 function Product() {
+  const [productsForTable, setProductForTable] = useState<ICleanProduct[] | null>(null);
   const [products, setProduct] = useState<IProduct[] | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectProduct, setSelectProduct] =
@@ -60,8 +75,7 @@ function Product() {
       const description = e.description;
       const stock = e.stock;
       const color = e.color;
-      const state = e.state;
-      
+      const state = e.state ? "Habilitado" : "Desabilitado";
 
       return {
         id_product,
@@ -78,7 +92,7 @@ function Product() {
       };
     });
 
-    setProduct(newProduct);
+    setProductForTable(newProduct);
   };
 
   // Obtener todos los Productos:
@@ -87,6 +101,7 @@ function Product() {
     console.log(product.data);
 
     cleanProduct(product.data);
+    setProduct(product.data);
   };
 
   //Funcion para cerrar modal
@@ -101,9 +116,8 @@ function Product() {
 
   const handleEditLocal = (id: string): void => {
     const product = products?.find((p) => p.id_product === id);
-    console.log(products);
-    setSelectProduct(product || initialValues);
-    console.log(product);
+    console.log("editProductoLocal",product);
+    setSelectProduct( product|| initialValues);
     handleOpenModal();
   };
 
@@ -154,7 +168,7 @@ function Product() {
               </div>
             </div>
             <Table
-              data={products}
+              data={productsForTable}
               colums={colums}
               crudButtons
               customButton={false}

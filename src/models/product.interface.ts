@@ -22,7 +22,6 @@ export interface IProduct {
     brand?: IBrand;
     id_brand?: string;
     category?: ICategory;
-    id_category? : string;
+    id_category?: string;
     create_at?: string;
-  }
-  
+}

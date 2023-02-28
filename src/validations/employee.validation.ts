@@ -25,6 +25,7 @@ export const EmployeeFormSchema = Yup.object()
       .max(20, "20 caracteres como máximo"),
     email: Yup.string()
       .required("Debe llenar el campo email")
+      .email("Debe ser un emali válido")
       .min(4, "4 caracteres como mínimo")
       .max(50, "20 caracteres como máximo"),
     date_birth: Yup.string()
