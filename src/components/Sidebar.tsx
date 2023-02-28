@@ -30,6 +30,11 @@ const sidebarItems = [
     href: "/category",
     icon: "/category.png",
   },
+  {
+    name: "Marcas",
+    href: "/brand",
+    icon: "/category.png",
+  }
 ];
 
 export default function Sidebar() {
