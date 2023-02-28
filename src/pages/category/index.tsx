@@ -21,6 +21,7 @@ const colums = {
 const initialValues: ICategory = {
   name: "",
   sizes: "",
+  products: []
 };
 
 function Category() {

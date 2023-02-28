@@ -1,5 +1,7 @@
 import Api from "@/config/Api";
+
 import { IBrand, IGetAllBrand } from "@/models/brand.interface";
+
 
 //? crear CATEGORIA
 const create = async (body: IBrand): Promise<IBrand> => {
@@ -8,6 +10,7 @@ const create = async (body: IBrand): Promise<IBrand> => {
 
 //? obtener CATEGORIAS
 const getAll = async (page = 1): Promise<IGetAllBrand> => {
+
   const res = await Api.get(`/brand?limit=${8}&page=${page}`);
   return res.data;
 };

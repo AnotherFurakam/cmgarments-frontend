@@ -1,3 +1,5 @@
+import { IProduct } from "./product.interface";
+
 export interface IGetAll {
   totalPages: number;
   actualPage: number;
@@ -11,4 +13,5 @@ export interface ICategory {
   name: string;
   sizes: string;
   createdAt?: string;
+  products: IProduct[]
 }
