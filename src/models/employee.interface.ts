@@ -15,7 +15,13 @@ export interface IEmployee {
   phone_number: string;
   email: string;
   date_birth: string;
-  state?: boolean;
+  state?: any;
   role?: any;
-  id_role?: string;
+  id_role?: Role;
+}
+
+
+interface Role {
+  id_role: string;
+  title: string;
 }
