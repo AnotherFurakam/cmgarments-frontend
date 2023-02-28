@@ -40,11 +40,11 @@ const LoginAdminForm = () => {
               <div className="d-flex flex-column gap-5">
                 <FormFieldContainer>
                   <Image src={'/images/login/user.svg'} width={20} height={20} alt="user_logo" />
-                  <FormField name={'username'} type={'input'} autocomplete="off" placeholder="Username" />
+                  <FormField name={'username'} type={'input'} autoComplete="off" placeholder="Username" />
                 </FormFieldContainer>
                 <FormFieldContainer>
                   <Image src={'/images/login/password.svg'} width={20} height={20} alt="password" />
-                  <FormField name={'password'} type={showPass} autocomplete="off" placeholder="Password" />
+                  <FormField name={'password'} type={showPass} autoComplete="off" placeholder="Password" />
                   <Image src={'/images/login/show.svg'} width={20} height={20} alt="password" onClick={() => handleShowPass()} />
                 </FormFieldContainer>
                 <FormSubmitButto type="submit" disabled={isSubmitting}>Iniciar Sesión</FormSubmitButto>
