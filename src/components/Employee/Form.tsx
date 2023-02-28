@@ -1,12 +1,10 @@
-import { ICategory } from "@/models/category.interface";
 import { IEmployee } from "@/models/employee.interface";
-import { category } from "@/services/category.service";
+import { IRole } from "@/models/role.interface";
 import { employeeService } from "@/services/employee.service";
-import { CategoryFormSchema } from "@/validations/category.validation";
+import { roleService } from "@/services/role.service";
 import { EmployeeFormSchema } from "@/validations/employee.validation";
 import { Field, Formik, FormikHelpers, FormikProps } from "formik";
-import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import FormErrorMessage from "../styled-component/forms/FormErrorMessage";
 import InputText from "../styled-component/forms/InputText";
@@ -29,6 +27,15 @@ export const Form: React.FC<FormInterface> = ({
   getEmployees,
 }) => {
   // const { postLocal, putLocal, selectedLocal } = useContext(LocalContext);
+
+  const [roles, setRoles] = useState<IRole[] | null>(null);
+  const handleGetRoles = async () => {
+    setRoles((await roleService.getAll()).data);
+  };
+
+  useEffect(() => {
+    handleGetRoles();
+  }, []);
 
   const handleSubmit = async (
     values: IEmployee,
@@ -180,19 +187,16 @@ export const Form: React.FC<FormInterface> = ({
               </div>
               <div className="mb-3">
                 <label htmlFor="role" className="fw-semibold pb-2">
-                  Fecha de nacimiento
+                  Rol
                 </label>
-
-                <Field name="id_role" as="select">
+                <Field name="id_role" as="select" className="form-select p-3">
                   <option value="">-- Selecciona una rol --</option>
-                  <option value="8c388770-a5ba-4052-bb30-aac1ea5a1c8c">
-                    Administrador
-                  </option>
-                  <option value="dcc92266-73d4-478d-8e5c-819ca1bf9e64">
-                    Empleado
-                  </option>
+                  {roles?.map((rol) => (
+                    <option key={rol.id_role} value={rol.id_role}>
+                      {rol.title}
+                    </option>
+                  ))}
                 </Field>
-
                 <FormErrorMessage name="id_role" component={"p"} />
               </div>
             </div>
