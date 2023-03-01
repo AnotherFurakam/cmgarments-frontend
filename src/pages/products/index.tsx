@@ -39,7 +39,7 @@ const initialValues: IProduct = {
   price: 0,
   stock: 0,
   color: "",
-  state: false,
+  state: true,
 };
 
 interface ICleanProduct {
@@ -75,7 +75,7 @@ function Product() {
       const description = e.description;
       const stock = e.stock;
       const color = e.color;
-      const state = e.state ? "Habilitado" : "Desabilitado";
+      const state = e.state? "Habilitado" : "Desabilitado";
 
       return {
         id_product,

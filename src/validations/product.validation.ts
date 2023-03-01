@@ -18,19 +18,19 @@ export const ProductFormSchema = Yup.object()
       .required("Debe llenar el campo Stock")
       .min(0, "0 caracteres como mínimo"),
     gender: Yup.string()
+      .oneOf(["Femenino","Masculino"])
       .required("Debe llenar el campo Genero"), 
     description: Yup.string()
       .required("Debe llenar el campo Descripcion")
       .min(0, "0 caracteres como mínimo")
       .max(1000, "1000 caracteres como máximo"),
     state: Yup.boolean()
+      .oneOf([true, false])
       .required("Debe llenar el campo Estado"),
     id_brand: Yup.string()
       .required("Debe llenar el campo Marca"), 
     id_category: Yup.string()
-        .required("Debe llenar el campo Categoria"), 
-    esPrimerCampo: Yup.boolean(),
-    
+        .required("Debe llenar el campo Categoria"),     
   })
   .optional();
 

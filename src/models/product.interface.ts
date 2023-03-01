@@ -19,6 +19,7 @@ export interface IProduct {
     gender: string;
     description: string;
     state?: boolean;
+    stateS?: string;
     brand?: IBrand;
     id_brand?: string;
     category?: ICategory;
