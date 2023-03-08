@@ -1,4 +1,4 @@
-import { ICategory } from "@/models/category.interface";
+
 import * as Yup from "yup";
 
 export const EmployeeFormSchema = Yup.object()
