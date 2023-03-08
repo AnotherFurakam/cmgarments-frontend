@@ -181,19 +181,6 @@ export const Form: React.FC<FormInterface> = ({
                 <FormErrorMessage name="description" component={"d"} />
               </div>
               <div className="mb-3">
-                <label htmlFor="stock" className="fw-semibold pb-2">
-                  Stock
-                </label>
-                <InputText
-                  id="stock"
-                  type="number"
-                  name="stock"
-                  placeholder="Dijite el stock"
-                  autoComplete="off"
-                />
-                <FormErrorMessage name="stock" component={"p"} />
-              </div>
-              <div className="mb-3">
                 <label htmlFor="color" className="fw-semibold pb-2">
                   Color
                 </label>
@@ -219,9 +206,6 @@ export const Form: React.FC<FormInterface> = ({
                 />
                 <FormErrorMessage name="price" component={"p"} />
               </div>
-
-            </div>
-            <div className="col-md-6">
               <div className="mb-3">
                 <label htmlFor="id_category" className="fw-semibold pb-2">
                   Categoria
@@ -236,6 +220,10 @@ export const Form: React.FC<FormInterface> = ({
                 </Field>
                 <FormErrorMessage name="id_category" component={"p"} />
               </div>
+
+            </div>
+            <div className="col-md-6">
+              
               <div className="mb-3">
                 <label htmlFor="size" className="fw-semibold pb-2">
                   Talla
