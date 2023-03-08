@@ -6,7 +6,7 @@ import { category } from "@/services/category.service";
 import { brand } from "@/services/brand.service";
 import { productService } from "@/services/product.service";
 import { ProductFormSchema } from "@/validations/product.validation";
-import { Field, Formik, FormikHelpers, FormikProps } from "formik";
+import { Field, Formik, FormikHelpers, FormikProps, useFormik } from "formik";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -15,6 +15,7 @@ import InputText from "../styled-component/forms/InputText";
 import SubmitButton from "../styled-component/forms/SubmitButton";
 import FormStyled from "./styled-components/FomStyled";
 import { Console } from "console";
+import { string } from "yup";
 
 
 export interface FormInterface {
@@ -48,6 +49,7 @@ export const Form: React.FC<FormInterface> = ({
     stock: data.stock ?? 0,
     color: data.color ?? '',
     state: data.state??true,
+    stateS: data.stateS?? '',
   };
 
   const [categorias, setCategorias] = useState<ICategory[] | null>(null)
@@ -75,8 +77,10 @@ export const Form: React.FC<FormInterface> = ({
     // console.log("Hola como estas");
     // console.log(values);
 
+    console.log(values.state)
+    
     if (type === "CREATE") {
-      await productService
+        await productService
         .create(values)
         .then((res) => {
           helpers.setSubmitting(false);
@@ -177,19 +181,6 @@ export const Form: React.FC<FormInterface> = ({
                 <FormErrorMessage name="description" component={"d"} />
               </div>
               <div className="mb-3">
-                <label htmlFor="stock" className="fw-semibold pb-2">
-                  Stock
-                </label>
-                <InputText
-                  id="stock"
-                  type="number"
-                  name="stock"
-                  placeholder="Dijite el stock"
-                  autoComplete="off"
-                />
-                <FormErrorMessage name="stock" component={"p"} />
-              </div>
-              <div className="mb-3">
                 <label htmlFor="color" className="fw-semibold pb-2">
                   Color
                 </label>
@@ -215,24 +206,6 @@ export const Form: React.FC<FormInterface> = ({
                 />
                 <FormErrorMessage name="price" component={"p"} />
               </div>
-
-            </div>
-            <div className="col-md-6">
-
-              <div className="mb-3">
-                <label htmlFor="state" className="fw-semibold pb-2">
-                  Estado
-                </label>
-                <Field name="state" className="form-select p-3" as="select" value={values.state? 1 : 0} onChange={(e: any) => setFieldValue('state', e.target.value === 1 ? true : false)}>
-                  <option value={1}>
-                    Habilitado
-                  </option>
-                  <option value={0}>
-                    Deshabilitado
-                  </option>
-                </Field>
-                <FormErrorMessage name="state" component={"p"} />
-              </div>
               <div className="mb-3">
                 <label htmlFor="id_category" className="fw-semibold pb-2">
                   Categoria
@@ -247,6 +220,10 @@ export const Form: React.FC<FormInterface> = ({
                 </Field>
                 <FormErrorMessage name="id_category" component={"p"} />
               </div>
+
+            </div>
+            <div className="col-md-6">
+              
               <div className="mb-3">
                 <label htmlFor="size" className="fw-semibold pb-2">
                   Talla
@@ -293,8 +270,21 @@ export const Form: React.FC<FormInterface> = ({
                 </Field>
                 <FormErrorMessage name="gender" component={"g"} />
               </div>
+              <div className="mb-3">
+                <label htmlFor="name" className="fw-semibold pb-2">
+                  Estado
+                </label>
+                <div className="form-check form-switch">
+                  <label>
+                    
+                    <Field type="checkbox" name="state" class="form-check-input"/>
+                    Habilitado
+                    <FormErrorMessage name="state" component={"p"} />
+                  
+                  </label>
+                </div>
+              </div>
             </div>
-
           </div>
           <div className="d-flex justify-content-center">
             <SubmitButton type="submit" disabled={isSubmitting}>
@@ -304,5 +294,5 @@ export const Form: React.FC<FormInterface> = ({
         </FormStyled>
       )}
     </Formik>
-  );
+  ); 
 };
