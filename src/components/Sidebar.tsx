@@ -34,6 +34,11 @@ const sidebarItems = [
     name: "Marcas",
     href: "/brand",
     icon: "/category.png",
+  },
+  {
+    name: "Proveedores",
+    href: "/supplier",
+    icon: "/employee.png",
   }
 ];
 
