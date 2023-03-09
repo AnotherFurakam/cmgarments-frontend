@@ -1,5 +1,6 @@
 import Api from "@/config/Api";
-import { IGetAll, ICategory } from "@/models/category.interface";
+import { ICategory } from "@/models/category.interface";
+import { IGetAll } from "@/models/global.interface";
 
 //? crear CATEGORIA
 const create = async (body: ICategory): Promise<ICategory> => {
@@ -7,7 +8,7 @@ const create = async (body: ICategory): Promise<ICategory> => {
 };
 
 //? obtener CATEGORIAS
-const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
+const getAll = async (limit = 10, page = 1): Promise<IGetAll<ICategory>> => {
   const res = await Api.get(`/category?limit=${limit}&page=${page}`);
   return res.data;
 };

@@ -11,21 +11,6 @@ const sidebarItems = [
     icon: "/dashboard.png",
   },
   {
-    name: "Empleados",
-    href: "/employee",
-    icon: "/employee.png",
-  },
-  {
-    name: "Productos",
-    href: "/products",
-    icon: "/products.png",
-  },
-  {
-    name: "Clientes",
-    href: "/clients",
-    icon: "/clients.png",
-  },
-  {
     name: "Categoria",
     href: "/category",
     icon: "/category.png",
@@ -36,10 +21,30 @@ const sidebarItems = [
     icon: "/category.png",
   },
   {
+    name: "Productos",
+    href: "/products",
+    icon: "/products.png",
+  },
+  {
     name: "Proveedores",
     href: "/supplier",
     icon: "/employee.png",
-  }
+  },
+  {
+    name: "Entradas",
+    href: "/entrance",
+    icon: "/products.png",
+  },
+  {
+    name: "Empleados",
+    href: "/employee",
+    icon: "/employee.png",
+  },
+  {
+    name: "Clientes",
+    href: "/clients",
+    icon: "/clients.png",
+  },
 ];
 
 export default function Sidebar() {
