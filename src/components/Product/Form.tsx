@@ -17,7 +17,6 @@ import FormStyled from "./styled-components/FomStyled";
 import { Console } from "console";
 import { string } from "yup";
 
-
 export interface FormInterface {
   type: string;
   title: string;
@@ -26,7 +25,6 @@ export interface FormInterface {
   getProduct: () => Promise<void>;
 }
 
-
 export const Form: React.FC<FormInterface> = ({
   type = "CREATE",
   title,
@@ -34,42 +32,40 @@ export const Form: React.FC<FormInterface> = ({
   handleCloseModal,
   getProduct,
 }) => {
-
   // Difiniendo valores iniciales
-  console.log("Data: ",data)
-
   const initialValues: IProduct = {
-    id_category: data.category?.id_category ?? '',
-    name: data.name ?? '',
-    size: data.size ?? '',
-    id_brand: data.brand?.id_brand ?? '',
-    gender: data.gender ?? '',
-    description: data.description ?? '',
+    id_category: data.category?.id_category ?? "",
+    name: data.name ?? "",
+    size: data.size ?? "",
+    id_brand: data.brand?.id_brand ?? "",
+    gender: data.gender ?? "",
+    description: data.description ?? "",
     price: data.price ?? 0,
     stock: data.stock ?? 0,
-    color: data.color ?? '',
-    state: data.state??true,
-    stateS: data.stateS?? '',
+    color: data.color ?? "",
+    state: data.state ?? true,
+    stateS: data.stateS ?? "",
   };
 
-  const [categorias, setCategorias] = useState<ICategory[] | null>(null)
-  const [marcas, setMarcas] = useState<IBrand[] | null>(null)
-  const [size, setSize] = useState<string[] | null | undefined>(null)
+  const [categorias, setCategorias] = useState<ICategory[] | null>(null);
+  const [marcas, setMarcas] = useState<IBrand[] | null>(null);
+  const [size, setSize] = useState<string[] | null | undefined>(null);
   const handleGetCategorias = async () => {
-    setCategorias((await categoryService.getAll()).data)
-  }
+    setCategorias((await categoryService.getAll()).data);
+  };
   const handleSize = (id: string) => {
-    console.log("obteniendo tallas de: " + id)
+    // console.log("obteniendo tallas de: " + id);
 
-    const sizes = categorias?.find((c) => c.id_category === id)
+    const sizes = categorias
+      ?.find((c) => c.id_category === id)
       ?.sizes.split(",");
 
     setSize(sizes);
-    console.log(size)
-  }
+    // console.log(size);
+  };
   const handleGetBrand = async () => {
-    setMarcas((await brand.getAll()).data)
-  }
+    setMarcas((await brand.getAll()).data);
+  };
   const handleSubmit = async (
     values: IProduct,
     helpers: FormikHelpers<IProduct>
@@ -77,10 +73,10 @@ export const Form: React.FC<FormInterface> = ({
     // console.log("Hola como estas");
     // console.log(values);
 
-    console.log(values.state)
-    
+    console.log(values.state);
+
     if (type === "CREATE") {
-        await productService
+      await productService
         .create(values)
         .then((res) => {
           helpers.setSubmitting(false);
@@ -92,7 +88,7 @@ export const Form: React.FC<FormInterface> = ({
           });
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           helpers.setSubmitting(false);
           Swal.fire({
             text: err.message,
@@ -100,9 +96,9 @@ export const Form: React.FC<FormInterface> = ({
           });
         });
     } else if (type === "UPDATE") {
-      console.log('ACtualizando',values)
+      console.log("ACtualizando", values);
       const idProduct = data.id_product;
-      console.log(idProduct)
+      console.log(idProduct);
       if (!idProduct) return;
 
       await productService
@@ -129,12 +125,11 @@ export const Form: React.FC<FormInterface> = ({
   useEffect(() => {
     handleGetCategorias();
     handleGetBrand();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (categorias !== null)
-      handleSize(initialValues.id_category as string)
-  }, [categorias])
+    if (categorias !== null) handleSize(initialValues.id_category as string);
+  }, [categorias]);
 
   return (
     <Formik
@@ -210,33 +205,46 @@ export const Form: React.FC<FormInterface> = ({
                 <label htmlFor="id_category" className="fw-semibold pb-2">
                   Categoria
                 </label>
-                <Field as="select" id="id_category" className="form-select p-3" name="id_category" onChange={(e: any) => { setFieldValue("id_category", e.target.value); handleSize(e.target.value) }}>
+                <Field
+                  as="select"
+                  id="id_category"
+                  className="form-select p-3"
+                  name="id_category"
+                  onChange={(e: any) => {
+                    setFieldValue("id_category", e.target.value);
+                    handleSize(e.target.value);
+                  }}
+                >
                   <option value="">-- Selecciona una Categoria --</option>
                   {categorias?.map((categoria) => (
-                    <option key={categoria.id_category} value={categoria.id_category}>
+                    <option
+                      key={categoria.id_category}
+                      value={categoria.id_category}
+                    >
                       {categoria.name}
                     </option>
                   ))}
                 </Field>
                 <FormErrorMessage name="id_category" component={"p"} />
               </div>
-
             </div>
             <div className="col-md-6">
-              
               <div className="mb-3">
                 <label htmlFor="size" className="fw-semibold pb-2">
                   Talla
                 </label>
-                <Field as="select" id="size" className="form-select p-3" name="size">
+                <Field
+                  as="select"
+                  id="size"
+                  className="form-select p-3"
+                  name="size"
+                >
                   <option value="">-- Selecciona una Talla --</option>
-                  {
-                    size?.map((talla, index) => (
-                      <option key={index} value={talla}>
-                        {talla}
-                      </option>
-                    ))
-                  }
+                  {size?.map((talla, index) => (
+                    <option key={index} value={talla}>
+                      {talla}
+                    </option>
+                  ))}
                 </Field>
                 <FormErrorMessage name="size" component={"p"} />
               </div>
@@ -244,7 +252,12 @@ export const Form: React.FC<FormInterface> = ({
                 <label htmlFor="id_brand" className="fw-semibold pb-2">
                   Marca
                 </label>
-                <Field as="select" id="id_brand" className="form-select p-3" name="id_brand">
+                <Field
+                  as="select"
+                  id="id_brand"
+                  className="form-select p-3"
+                  name="id_brand"
+                >
                   <option value="">-- Selecciona una Marca --</option>
                   {marcas?.map((marca) => (
                     <option key={marca.id_brand} value={marca.id_brand}>
@@ -261,12 +274,8 @@ export const Form: React.FC<FormInterface> = ({
                 </label>
                 <Field name="gender" as="select" className="form-select p-3">
                   <option value="">-- Selecciona una Genero --</option>
-                  <option value="Masculino">
-                    Masculino
-                  </option>
-                  <option value="Femenino">
-                    Femenino
-                  </option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
                 </Field>
                 <FormErrorMessage name="gender" component={"g"} />
               </div>
@@ -276,11 +285,13 @@ export const Form: React.FC<FormInterface> = ({
                 </label>
                 <div className="form-check form-switch">
                   <label>
-                    
-                    <Field type="checkbox" name="state" class="form-check-input"/>
+                    <Field
+                      type="checkbox"
+                      name="state"
+                      className="form-check-input"
+                    />
                     Habilitado
                     <FormErrorMessage name="state" component={"p"} />
-                  
                   </label>
                 </div>
               </div>
@@ -294,5 +305,5 @@ export const Form: React.FC<FormInterface> = ({
         </FormStyled>
       )}
     </Formik>
-  ); 
+  );
 };
