@@ -5,8 +5,8 @@ import Tabule from "./styled-component/Table";
 import TableBody from "./styled-component/TableBody";
 import TableActionButton from "./styled-component/TableActionButton";
 import { MdEdit } from "react-icons/md";
-import { BsXLg } from "react-icons/bs";
-import { FaCog } from "react-icons/fa";
+import { BsImages, BsXLg } from "react-icons/bs";
+// import { FaCog } from "react-icons/fa";
 import Swal from "sweetalert2";
 export interface TableInterface {
   colums: any;
@@ -97,14 +97,14 @@ const Table: React.FC<TableInterface> = ({
                           color="#111D13"
                           onClick={() => handleEdit(Object.values<any>(d)[0])}
                         >
-                          <MdEdit color="#fff" size={30} />
+                          <MdEdit color="#fff" size={35} />
                         </TableActionButton>
                         <TableActionButton
                           type="button"
                           color="#BD4949"
                           onClick={() => handleDelete(Object.values<any>(d)[0])}
                         >
-                          <BsXLg color="#fff" size={30} />
+                          <BsXLg color="#fff" size={35} />
                         </TableActionButton>
                       </>
                     )}
@@ -116,8 +116,8 @@ const Table: React.FC<TableInterface> = ({
                           handleCustomAction(Object.values<any>(d)[0])
                         }
                       >
-                        <span>{customButtonTitle}</span>
-                        <FaCog color="#fff" size={30} />
+                        {/* <span>{customButtonTitle}</span> */}
+                        <BsImages color="#fff" size={35} />
                       </TableActionButton>
                     )}
                   </td>

@@ -11,6 +11,7 @@ import { FaPlus } from "react-icons/fa";
 import { ICategory } from "@/models/category.interface";
 import { category } from "@/services/category.service";
 import Swal from "sweetalert2";
+import { ImageModal } from "@/components/Product/ImageModal";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -28,7 +29,6 @@ const colums = {
   state: "Estado",
 };
 
-
 const initialValues: IProduct = {
   name: "",
   id_category: "",
@@ -43,25 +43,28 @@ const initialValues: IProduct = {
 };
 
 interface ICleanProduct {
-    id_product?: string;
-    name: string;
-    size: string;
-    color: string;
-    price: number;
-    stock: number;
-    gender: string;
-    description: string;
-    state?: string;
-    id_brand?: string;
-    id_category? : string;
-  }
+  id_product?: string;
+  name: string;
+  size: string;
+  color: string;
+  price: number;
+  stock: number;
+  gender: string;
+  description: string;
+  state?: string;
+  id_brand?: string;
+  id_category?: string;
+}
 
 function Product() {
-  const [productsForTable, setProductForTable] = useState<ICleanProduct[] | null>(null);
+  const [productsForTable, setProductForTable] = useState<
+    ICleanProduct[] | null
+  >(null);
   const [products, setProduct] = useState<IProduct[] | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectProduct, setSelectProduct] =
-    useState<IProduct>(initialValues);
+  const [selectProduct, setSelectProduct] = useState<IProduct>(initialValues);
+  // estado modal imagen
+  const [isOpenImage, setIsOpenImage] = useState(false);
 
   const cleanProduct = (product: IProduct[]) => {
     const newProduct = product.map((e) => {
@@ -75,7 +78,7 @@ function Product() {
       const description = e.description;
       const stock = e.stock;
       const color = e.color;
-      const state = e.state? "Habilitado" : "Desabilitado";
+      const state = e.state ? "Habilitado" : "Desabilitado";
 
       return {
         id_product,
@@ -98,11 +101,13 @@ function Product() {
   // Obtener todos los Productos:
   const getProduct = async (): Promise<void> => {
     const product = await productService.getAll();
-    console.log(product.data);
-
     cleanProduct(product.data);
     setProduct(product.data);
   };
+
+  // obtener Producto seleccionado
+  const searchSelectedProduct = (id: string) =>
+    products?.find((p) => p.id_product === id);
 
   //Funcion para cerrar modal
   const handleCloseModal = () => {
@@ -110,14 +115,11 @@ function Product() {
     if (selectProduct.id_product) setSelectProduct(initialValues);
   };
 
-  const handleOpenModal = (): void => {
-    setIsOpenModal(true);
-  };
+  const handleOpenModal = (): void => setIsOpenModal(true);
 
   const handleEditLocal = (id: string): void => {
-    const product = products?.find((p) => p.id_product === id);
-    console.log("editProductoLocal",product);
-    setSelectProduct( product|| initialValues);
+    const product = searchSelectedProduct(id);
+    setSelectProduct(product || initialValues);
     handleOpenModal();
   };
 
@@ -138,6 +140,19 @@ function Product() {
           icon: "error",
         });
       });
+  };
+
+  // abrir modal de Imagen
+  const handleImage = (id: string): void => {
+    handleEditLocal(id);
+    setIsOpenImage(true);
+    console.log("abrir form imagen");
+  };
+
+  // cerrar modal de Imagen
+  const handleCloseImage = (): void => {
+    setIsOpenImage(false);
+    handleCloseModal();
   };
 
   useEffect(() => {
@@ -171,9 +186,9 @@ function Product() {
               data={productsForTable}
               colums={colums}
               crudButtons
-              customButton={false}
+              customButton={true}
               customButtonTitle={""}
-              customFunction={() => {}}
+              customFunction={handleImage}
               editFunction={handleEditLocal}
               deleteFunction={handleDeleteProduct}
             />
@@ -181,15 +196,24 @@ function Product() {
               title="Producto"
               type={selectProduct.id_product ? "UPDATE" : "CREATE"}
               isOpen={isOpenModal}
-              handleCloseModal={handleCloseModal}
+              handleCloseModal={
+                isOpenImage ? handleCloseImage : handleCloseModal
+              }
             >
-              <Form
-                type={selectProduct.id_product ? "UPDATE" : "CREATE"}
-                title="Producto"
-                data={selectProduct}
-                handleCloseModal={handleCloseModal}
-                getProduct={getProduct}
-              />
+              {isOpenImage ? (
+                <ImageModal
+                  data={selectProduct}
+                  handleCloseModal={handleCloseImage}
+                />
+              ) : (
+                <Form
+                  type={selectProduct.id_product ? "UPDATE" : "CREATE"}
+                  title="Producto"
+                  data={selectProduct}
+                  handleCloseModal={handleCloseModal}
+                  getProduct={getProduct}
+                />
+              )}
             </Modal>
           </div>
         </div>
