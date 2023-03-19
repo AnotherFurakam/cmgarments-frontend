@@ -1,6 +1,10 @@
 import Api from "@/config/Api";
-import { IImage } from "@/models/image.interface";
-import { IGetAllProducts, IProduct, SearchByEnum } from "@/models/product.interface";
+import { IImage, ISaveImage } from "@/models/image.interface";
+import {
+  IGetAllProducts,
+  IProduct,
+  SearchByEnum,
+} from "@/models/product.interface";
 
 //? crear producto
 const create = async (body: IProduct): Promise<IProduct> => {
@@ -29,11 +33,21 @@ const getImages = async (id: string): Promise<IImage[]> => {
   return res.data;
 };
 
-//* Buscar producto
-const searchProducts = async(text: string, searchBy: SearchByEnum) => {
-  const res = await Api.get(`/product/search/by?text=${text}&searchBy=${searchBy}`)
+//? Guardar Imagen por ID de PRODUCTO
+const saveImage = async (id: string, data: ISaveImage): Promise<IImage> => {
+  const res = await Api.post(`/product/${id}/image`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return res.data;
-}
+};
+
+//* Buscar producto
+const searchProducts = async (text: string, searchBy: SearchByEnum) => {
+  const res = await Api.get(
+    `/product/search/by?text=${text}&searchBy=${searchBy}`
+  );
+  return res.data;
+};
 
 const productService = {
   create,
@@ -41,7 +55,8 @@ const productService = {
   update,
   delete: _delete,
   getImages,
-  searchProducts
+  saveImage,
+  searchProducts,
 };
 
 export { productService };
