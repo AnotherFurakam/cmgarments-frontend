@@ -1,6 +1,6 @@
 import Api from "@/config/Api";
 import { IImage } from "@/models/image.interface";
-import { IGetAll, IProduct } from "@/models/product.interface";
+import { IGetAllProducts, IProduct, SearchByEnum } from "@/models/product.interface";
 
 //? crear producto
 const create = async (body: IProduct): Promise<IProduct> => {
@@ -8,7 +8,7 @@ const create = async (body: IProduct): Promise<IProduct> => {
 };
 
 //? obtener producto
-const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
+const getAll = async (limit = 10, page = 1): Promise<IGetAllProducts> => {
   const res = await Api.get(`/product?limit=${limit}&page=${page}`);
   return res.data;
 };
@@ -29,12 +29,19 @@ const getImages = async (id: string): Promise<IImage[]> => {
   return res.data;
 };
 
+//* Buscar producto
+const searchProducts = async(text: string, searchBy: SearchByEnum) => {
+  const res = await Api.get(`/product/search/by?text=${text}&searchBy=${searchBy}`)
+  return res.data;
+}
+
 const productService = {
   create,
   getAll,
   update,
   delete: _delete,
   getImages,
+  searchProducts
 };
 
 export { productService };
