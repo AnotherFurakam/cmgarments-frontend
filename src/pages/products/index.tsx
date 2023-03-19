@@ -15,6 +15,7 @@ import { ImageModal } from "@/components/Product/ImageModal";
 import { SearchBar } from "@/components/Product/SearchBar";
 import { ProductsState, useProductStore } from "@/store/ProductStore";
 import { shallow } from "zustand/shallow";
+import { DateFilter } from "@/components/Product/DateFilter";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -180,9 +181,10 @@ function Product() {
                   height={60}
                   className="me-3 img-fluid"
                 />
-                <h1 className="fw-bold fs-3">Productos</h1>
+                <h1 className="fw-bold fs-3" onClick={getProduct} style={{cursor: 'pointer'}}>Productos</h1>
               </div>
               <div className="d-flex align-items-center gap-3">
+                <DateFilter/>
                 <SearchBar />
                 <ButtonAddStyle type="button" onClick={handleOpenModal}>
                   <span className="d-d-inline-block me-3">Agregar</span>

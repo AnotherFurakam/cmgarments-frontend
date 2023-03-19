@@ -49,6 +49,14 @@ const searchProducts = async (text: string, searchBy: SearchByEnum) => {
   return res.data;
 };
 
+//* Filtrar producto por fecha
+const filterByDateProduct = async (date: string) => {
+  const res = await Api.get(
+    `/product/filter/items?date=${date}`
+  );
+  return res.data;
+}
+
 const productService = {
   create,
   getAll,
@@ -57,6 +65,7 @@ const productService = {
   getImages,
   saveImage,
   searchProducts,
+  filterByDateProduct
 };
 
 export { productService };
