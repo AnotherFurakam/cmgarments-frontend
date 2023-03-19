@@ -2,7 +2,7 @@ import BaseLayout from "@/components/BaseLayout";
 import { Form } from "@/components/Product/Form";
 import { Modal } from "@/components/Modal";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
-import { Table } from "@/components/Table";
+import { Table } from "@/components/Product/Table";
 import { IProduct } from "@/models/product.interface";
 import { productService } from "@/services/product.service";
 import Image from "next/image";
@@ -12,6 +12,9 @@ import { ICategory } from "@/models/category.interface";
 import { category } from "@/services/category.service";
 import Swal from "sweetalert2";
 import { ImageModal } from "@/components/Product/ImageModal";
+import { SearchBar } from "@/components/Product/SearchBar";
+import { ProductsState, useProductStore } from "@/store/ProductStore";
+import { shallow } from "zustand/shallow";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -58,16 +61,16 @@ interface ICleanProduct {
 
 function Product() {
   const [productsForTable, setProductForTable] = useState<
-    ICleanProduct[] | null
+    ICleanProduct[] | null | undefined
   >(null);
-  const [products, setProduct] = useState<IProduct[] | null>(null);
+  const [productos, setProductos] = useState<IProduct[] | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectProduct, setSelectProduct] = useState<IProduct>(initialValues);
   // estado modal imagen
   const [isOpenImage, setIsOpenImage] = useState(false);
 
-  const cleanProduct = (product: IProduct[]) => {
-    const newProduct = product.map((e) => {
+  const cleanProduct = (product: IProduct[] | undefined) => {
+    const newProduct = product?.map((e) => {
       const id_product = e.id_product;
       const name = e.name;
       const id_category = e.category?.name;
@@ -98,16 +101,20 @@ function Product() {
     setProductForTable(newProduct);
   };
 
+  //Store de productos
+  const { products, setProducts }: ProductsState = useProductStore((state: ProductsState): ProductsState => state, shallow)
+
   // Obtener todos los Productos:
   const getProduct = async (): Promise<void> => {
     const product = await productService.getAll();
-    cleanProduct(product.data);
-    setProduct(product.data);
+    setProducts(product);
+    setProductos(product.data);
+    cleanProduct(products?.data);
   };
 
   // obtener Producto seleccionado
   const searchSelectedProduct = (id: string) =>
-    products?.find((p) => p.id_product === id);
+    products?.data?.find((p) => p.id_product === id);
 
   //Funcion para cerrar modal
   const handleCloseModal = () => {
@@ -156,7 +163,7 @@ function Product() {
   };
 
   useEffect(() => {
-    getProduct();
+    getProduct()
   }, []);
 
   return (
@@ -175,7 +182,8 @@ function Product() {
                 />
                 <h1 className="fw-bold fs-3">Productos</h1>
               </div>
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center gap-3">
+                <SearchBar />
                 <ButtonAddStyle type="button" onClick={handleOpenModal}>
                   <span className="d-d-inline-block me-3">Agregar</span>
                   <FaPlus />
@@ -183,7 +191,7 @@ function Product() {
               </div>
             </div>
             <Table
-              data={productsForTable}
+              data={products?.data}
               colums={colums}
               crudButtons
               customButton={true}

@@ -1,7 +1,7 @@
 import { IBrand } from "./brand.interface";
 import { ICategory } from "./category.interface";
 
-export interface IGetAll {
+export interface IGetAllProducts {
   totalPages: number;
   actualPage: number;
   nextPage?: number;
@@ -25,4 +25,9 @@ export interface IProduct {
   category?: ICategory;
   id_category?: string;
   create_at?: string;
+}
+
+export enum SearchByEnum {
+  NAME = 'name',
+  SKU = 'sku'
 }

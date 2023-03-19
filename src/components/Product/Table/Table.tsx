@@ -1,16 +1,17 @@
 import React from "react";
-import TableContainer from "./styled-component/TableContainer";
-import TableHead from "./styled-component/TableHead";
-import Tabule from "./styled-component/Table";
-import TableBody from "./styled-component/TableBody";
-import TableActionButton from "./styled-component/TableActionButton";
+import TableContainer from "../../Table/styled-component/TableContainer";
+import TableHead from "../../Table/styled-component/TableHead";
+import Tabule from "../../Table/styled-component/Table";
+import TableBody from "../../Table/styled-component/TableBody";
+import TableActionButton from "../../Table/styled-component/TableActionButton";
 import { MdEdit } from "react-icons/md";
 import { BsImages, BsXLg } from "react-icons/bs";
 // import { FaCog } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { IProduct } from "@/models/product.interface";
 export interface TableInterface {
   colums: any;
-  data: any[] | null | undefined;
+  data: IProduct[] | null | undefined;
   crudButtons: boolean;
   customButton: boolean;
   customButtonTitle: string;
@@ -60,12 +61,16 @@ const Table: React.FC<TableInterface> = ({
       <Tabule>
         <TableHead>
           <tr>
-            {colums &&
-              Object.values(colums).map((column: any, index) => (
-                <th className="px-2" key={index}>
-                  {column}
-                </th>
-              ))}
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Talla</th>
+            <th>Marca</th>
+            <th>Genero</th>
+            <th>Descripciónn</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Color</th>
+            <th>Estado</th>
             <th>OPCIONES</th>
           </tr>
         </TableHead>
@@ -74,21 +79,16 @@ const Table: React.FC<TableInterface> = ({
             data.map((d) => {
               return (
                 <tr key={Object.values<any>(d)[0]}>
-                  {Object.keys(d).map((k, i) => {
-                    return (
-                      Object.keys(colums).find((nc) => nc === k) && (
-                        <td key={i}>
-                          <p className="m-0 text-truncate fw-semibold px-2">
-                            {typeof Object.values<any>(d)[i] === "boolean"
-                              ? Object.values<any>(d)[i] === true
-                                ? "SI"
-                                : "No"
-                              : Object.values<any>(d)[i]}
-                          </p>
-                        </td>
-                      )
-                    );
-                  })}
+                  <td>{d.name}</td>
+                  <td>{d.category?.name}</td>
+                  <td>{d.size}</td>
+									<td>{d.brand?.name}</td>
+                  <td>{d.gender}</td>
+                  <td>{d.description}</td>
+                  <td>{d.stock}</td>
+                  <td>{d.price}</td>
+                  <td>{d.color}</td>
+                  <td>{d.state ? 'Habilitado' : 'Desabilitado'}</td>
                   <td className="d-flex justify-content-center gap-2">
                     {crudButtons && (
                       <>
@@ -131,3 +131,4 @@ const Table: React.FC<TableInterface> = ({
 };
 
 export default Table;
+
