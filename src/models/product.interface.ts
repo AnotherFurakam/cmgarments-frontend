@@ -28,6 +28,11 @@ export interface IProduct {
 }
 
 export enum SearchByEnum {
-  NAME = 'name',
-  SKU = 'sku'
+  NAME = "name",
+  SKU = "sku",
+}
+
+export interface IProductEntrance {
+  id_product: string;
+  name: string;
 }
