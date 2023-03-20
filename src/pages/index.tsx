@@ -2,7 +2,7 @@ import BaseLayout from "@/components/BaseLayout";
 import { ProductCard } from "@/components/Dashboard/ProductCard";
 import { QuantityCard } from "@/components/Dashboard/QuantityCard";
 import { DashboardContainer } from "@/components/Dashboard/dashboard-styled-components";
-import { IProduct } from "@/models/product.interface";
+import { IProduct, IProductWithImages } from "@/models/product.interface";
 import { employeeService } from "@/services/employee.service";
 import { productService } from "@/services/product.service";
 import { supplierService } from "@/services/supplier.service";
@@ -38,7 +38,7 @@ export default function Home() {
     type: 'Suppliers'
   })
 
-  const [recentProducts, setRecentProducts] = useState<IProduct[] | null>(null)
+  const [recentProducts, setRecentProducts] = useState<IProductWithImages[] | null>(null)
 
 
   const productQuantityHandler = async () => {
