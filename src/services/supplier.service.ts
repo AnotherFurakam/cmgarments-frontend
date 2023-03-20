@@ -22,12 +22,21 @@ const _delete = async (id: string): Promise<ISupplier> => {
   return await Api.delete(`/supplier/${id}`);
 };
 
+//* Obtener cantidad de proveedores
+const getSupplierQuantity = async () => {
+  const res = await Api.get(
+    `/supplier/count/quantity`
+  );
+  return res.data;
+}
+
 
 const supplierService = {
   create,
   getAll,
   update,
-  delete: _delete
+  delete: _delete,
+  getSupplierQuantity
 };
 
 export { supplierService };
