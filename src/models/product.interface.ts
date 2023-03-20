@@ -1,5 +1,6 @@
 import { IBrand } from "./brand.interface";
 import { ICategory } from "./category.interface";
+import { IShortImage } from "./image.interface";
 
 export interface IGetAllProducts {
   totalPages: number;
@@ -7,6 +8,12 @@ export interface IGetAllProducts {
   nextPage?: number;
   prevPage?: number;
   data: IProduct[];
+}
+
+export interface IProductWithImages {
+  id_product?: string;
+  name: string;
+  images: IShortImage[];
 }
 
 export interface IProduct {

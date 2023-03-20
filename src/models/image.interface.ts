@@ -8,6 +8,12 @@ export interface IImage {
   product?: IProductEntrance;
 }
 
+export interface IShortImage {
+  title: string;
+  url: string;
+  main: boolean;
+}
+
 export interface ISaveImage {
   title: string;
   image: File;

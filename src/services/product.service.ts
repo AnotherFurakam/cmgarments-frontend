@@ -57,6 +57,23 @@ const filterByDateProduct = async (date: string) => {
   return res.data;
 }
 
+//* Obtener cantidad de productos
+const getProductQuantity = async () => {
+  const res = await Api.get(
+    `/product/count/quantity`
+  );
+  return res.data;
+}
+
+//* Obtener cantidad de productos
+const getRecentProducts = async (quantity: number) => {
+  const res = await Api.get(
+    `/product/recents/items?quantity=${quantity}`
+  );
+  return res.data;
+}
+
+
 const productService = {
   create,
   getAll,
@@ -65,7 +82,9 @@ const productService = {
   getImages,
   saveImage,
   searchProducts,
-  filterByDateProduct
+  filterByDateProduct,
+  getProductQuantity,
+  getRecentProducts
 };
 
 export { productService };

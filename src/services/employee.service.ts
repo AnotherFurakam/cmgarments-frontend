@@ -22,12 +22,21 @@ const _delete = async (id: string): Promise<IEmployee> => {
   return await Api.delete(`/employee/${id}`);
 };
 
+//* Obtener cantidad de empleados
+const getEmployeeQuantity = async () => {
+  const res = await Api.get(
+    `/employee/count/quantity`
+  );
+  return res.data;
+}
+
 
 const employeeService = {
   create,
   getAll,
   update,
-  delete: _delete
+  delete: _delete,
+  getEmployeeQuantity
 };
 
 export { employeeService };
