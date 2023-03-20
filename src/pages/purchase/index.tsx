@@ -3,16 +3,20 @@ import { Modal } from "@/components/Modal";
 import { Form } from "@/components/purchase/Form";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Table } from "@/components/Table";
+import TablePurchase from "@/components/Table-Purchase/Table";
 import { IPurchase } from "@/models/purchase.interface";
 import { purchaseService } from "@/services/purchase.service";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const columns = {
   description: "Description",
   total_price: "Precio total",
   date_purchase: "Fecha de compra",
+  id_supplier: "Proveedor",
 };
 
 const initialValues: IPurchase = {
@@ -29,6 +33,8 @@ interface ICleanPurchase {
   id_supplier?: string;
 }
 
+// ----------------
+
 function Purchase() {
   const [purchaseForTable, setPurchaseForTable] = useState<
     ICleanPurchase[] | null
@@ -39,13 +45,14 @@ function Purchase() {
     useState<IPurchase>(initialValues);
 
   //Limpiar data
-  const cleanPurchase = (employee: IPurchase[]) => {
-    const newPurchase = employee.map((e) => {
+  const cleanPurchase = (purchase: IPurchase[]) => {
+    const newPurchase = purchase.map((e) => {
       const id_purchase = e.id_purchase;
       const total_price = e.total_price;
       const description = e.description;
       const date_purchase = e.date_purchase;
-      const id_supplier = e.supplier?.name;
+      const id_supplier = e.id_supplier?.name;
+      console.log(id_supplier);
 
       return {
         id_purchase,
@@ -56,7 +63,8 @@ function Purchase() {
       };
     });
 
-    setPurchases(newPurchase);
+    setPurchaseForTable(newPurchase);
+    console.log(newPurchase);
   };
 
   // Obtener todos los Productos:
@@ -65,7 +73,7 @@ function Purchase() {
     console.log(purchase.data);
 
     cleanPurchase(purchase.data);
-    setPurchaseForTable(purchase.data);
+    setPurchases(purchase.data);
   };
 
   //Funcion para cerrar modal
@@ -78,11 +86,36 @@ function Purchase() {
     setIsOpenModal(true);
   };
 
-  const handleEditLocal = (id: string): void => {
+  const handleEditPurchase = (id: string): void => {
     const purchase = purchases?.find((p) => p.id_purchase === id);
     console.log("editProductoLocal", purchase);
     setSelectPurchase(purchase || initialValues);
     handleOpenModal();
+  };
+
+  const getPurchaseDetailByIdPurchase = (id: string) => {
+    const purchase = purchases?.find((p) => p.id_purchase === id);
+    const id_purchase = purchase?.id_purchase;
+    return id_purchase
+  };
+
+  const handleDeletePurchase = async (id: string): Promise<void> => {
+    await purchaseService
+      .delete(id)
+      .then((res) => {
+        Swal.fire(
+          "Eliminado!",
+          "El registro fue eliminado con éxito",
+          "success"
+        );
+        getPurchase();
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.message,
+          icon: "error",
+        });
+      });
   };
 
   useEffect(() => {
@@ -112,15 +145,16 @@ function Purchase() {
                 </ButtonAddStyle>
               </div>
             </div>
-            <Table
+            <TablePurchase
               data={purchaseForTable}
               colums={columns}
               crudButtons
               customButton={false}
               customButtonTitle={""}
               customFunction={() => {}}
-              editFunction={handleEditLocal}
-              deleteFunction={()=>{}} //Eliminar
+              editFunction={handleEditPurchase}
+              deleteFunction={handleDeletePurchase} //Eliminar
+              goPurchaseDetail={getPurchaseDetailByIdPurchase} //Ir a detalle de la compra
             />
             <Modal
               title="Compra"
@@ -130,10 +164,10 @@ function Purchase() {
             >
               <Form
                 type={selectPurchase.id_purchase ? "UPDATE" : "CREATE"}
-                title="Producto"
+                title="Compra"
                 data={selectPurchase}
                 handleCloseModal={handleCloseModal}
-                getProduct={getPurchase}
+                getPurchase={getPurchase}
               />
             </Modal>
           </div>

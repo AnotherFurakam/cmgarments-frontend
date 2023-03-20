@@ -18,7 +18,7 @@ const sidebarItems = [
   {
     name: "Marcas",
     href: "/brand",
-    icon: "/category.png",
+    icon: "/brand.png",
   },
   {
     name: "Productos",
@@ -28,12 +28,12 @@ const sidebarItems = [
   {
     name: "Proveedores",
     href: "/supplier",
-    icon: "/employee.png",
+    icon: "/supplier.png",
   },
   {
     name: "Entradas",
     href: "/entrance",
-    icon: "/products.png",
+    icon: "/entrace.png",
   },
   {
     name: "Empleados",
@@ -44,6 +44,11 @@ const sidebarItems = [
     name: "Clientes",
     href: "/clients",
     icon: "/clients.png",
+  },
+  {
+    name: "Compras",
+    href: "/purchase",
+    icon: "/purchase.png",
   },
 ];
 

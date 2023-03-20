@@ -13,21 +13,20 @@ const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
 };
 
 //? actualizar compra
-// const update = async (body: IPurchase, id: string): Promise<IPurchase> => {
-//   return await Api.put(`/purchase/${id}`, body);
-// };
+const update = async (body: IPurchase, id: string): Promise<IPurchase> => {
+  return await Api.put(`/purchase/${id}`, body);
+};
 
 // //? eliminar compra
-// const _delete = async (id: string): Promise<IPurchase> => {
-//   return await Api.delete(`/purchase/${id}`);
-// };
-
+const _delete = async (id: string): Promise<IPurchase> => {
+  return await Api.delete(`/purchase/${id}`);
+};
 
 const purchaseService = {
   create,
   getAll,
-  // update,
-  // delete: _delete
+  update,
+  delete: _delete,
 };
 
 export { purchaseService };
