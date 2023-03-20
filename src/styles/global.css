@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -6,4 +6,34 @@
 
 .bg-main {
   background-color: #f8eeee;
+}
+
+/* width */
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+  background: #f1f1f1;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(27, 11, 167, 0.616);
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(18, 10, 94);
 }
