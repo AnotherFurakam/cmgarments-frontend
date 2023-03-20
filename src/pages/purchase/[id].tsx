@@ -70,7 +70,7 @@ function PurchaseDetail() {
     console.log(newPurchaseDetail);
   };
 
-  // Obtener todos los Productos:
+  // Obtener todo el detalle de compra por id compra:
   const getPurchase = async (): Promise<void> => {
     const purchase = await purchaseDetailService.getAllByIdPurchase(id);
     console.log(purchase.data);
