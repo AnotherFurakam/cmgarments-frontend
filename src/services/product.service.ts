@@ -50,9 +50,9 @@ const searchProducts = async (text: string, searchBy: SearchByEnum) => {
 };
 
 //* Filtrar producto por fecha
-const filterByDateProduct = async (date: string) => {
+const filterByDateProduct = async (dateStart: string, dateEnd: string) => {
   const res = await Api.get(
-    `/product/filter/items?date=${date}`
+    `/product/filter/items?dateStart=${dateStart}&dateEnd=${dateEnd}`
   );
   return res.data;
 }
