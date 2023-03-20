@@ -3,7 +3,7 @@ import CargaImage from "./CargaImage";
 import { ISaveImage } from "@/models/image.interface";
 
 interface ContentCInterface {
-  archivosImg: File[] | null;
+  archivosImg: ISaveImage[] | null;
   idProduct: string;
   uploadFile: (
     data: ISaveImage,
@@ -24,7 +24,7 @@ const ContentCarga: React.FC<ContentCInterface> = ({
     <>
       {archivosImg.map((file, i) => (
         <CargaImage
-          key={file.name}
+          key={file.title}
           file={file}
           idProduct={idProduct}
           uploadFile={uploadFile}

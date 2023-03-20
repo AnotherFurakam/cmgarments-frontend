@@ -3,7 +3,7 @@ import { ISaveImage } from "@/models/image.interface";
 import React, { useEffect, useState } from "react";
 
 interface CargaImageInterface {
-  file: File;
+  file: ISaveImage;
   idProduct: string;
   uploadFile: (
     data: ISaveImage,
@@ -33,16 +33,11 @@ const CargaImage: React.FC<CargaImageInterface> = ({
       setFileUrl(fileUrl);
     });
 
-    filerReader.readAsDataURL(file);
+    filerReader.readAsDataURL(file.image);
   };
 
   const uploadImageFile = () => {
-    const imageFile: ISaveImage = {
-      image: file,
-      main: false,
-      title: file.name,
-    };
-    uploadFile(imageFile, setLoading, setErr, index);
+    uploadFile(file, setLoading, setErr, index);
   };
 
   useEffect(() => {
@@ -75,12 +70,12 @@ const CargaImage: React.FC<CargaImageInterface> = ({
             width="50px"
             className="rounded-1"
             src={fileUrl || ""}
-            alt={file.name}
+            alt={file.title}
           />
         </div>
         <div className="col-9">
           <h5 style={{ fontSize: "14px" }} className="fw-bold">
-            {file.name}
+            {file.title}
           </h5>
           <div className="progress">
             <div

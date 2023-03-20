@@ -4,6 +4,7 @@ import { ProductsState, useProductStore } from "@/store/ProductStore";
 import React, { useEffect } from "react";
 import { shallow } from "zustand/shallow";
 import Form from "./Form";
+import { ItemImage } from "./ItemImage";
 
 interface ImageInterface {
   data: IProduct;
@@ -29,16 +30,17 @@ const ImageModal: React.FC<ImageInterface> = ({ data, handleCloseModal }) => {
     <div style={{ maxWidth: "850px" }} className="py-4 px-4">
       <div className="row gx-5">
         <div className="col-md-5 border-radius box-shadow">
-          <div style={{ maxHeight: "515px" }} className="overflow-auto">
+          <div
+            style={{ maxHeight: "515px" }}
+            className="overflow-auto custom-scroll"
+          >
             <div className="px-4">
               {productState.images !== null
                 ? productState.images.map((image) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <ItemImage
                       key={image.id_image}
-                      src={image.url}
-                      alt={image.title}
-                      className="img-fluid pb-4 pt-3"
+                      url={image.url}
+                      title={image.title}
                     />
                   ))
                 : null}

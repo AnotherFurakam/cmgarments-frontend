@@ -13,8 +13,6 @@ const ItemCarousel: React.FC<ItemCInterface> = ({ isActive, file }) => {
     const filerReader = new FileReader();
     filerReader.addEventListener("load", (e) => {
       const fileUrl = filerReader.result as string;
-      console.log(fileUrl);
-
       setFileUrl(fileUrl);
     });
 

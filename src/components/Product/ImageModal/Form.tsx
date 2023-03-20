@@ -12,7 +12,7 @@ interface FormInterface {
 }
 
 const Form: React.FC<FormInterface> = ({ idProduct, loadImages }) => {
-  const [archivosImg, setArchivosImg] = useState<File[] | null>(null);
+  const [archivosImg, setArchivosImg] = useState<ISaveImage[] | null>(null);
   const [saveImages, setSaveImages] = useState(false);
   const [lengthImages, setLengthImages] = useState(0);
 
@@ -25,7 +25,16 @@ const Form: React.FC<FormInterface> = ({ idProduct, loadImages }) => {
     ];
 
     const arr = Array.from(files);
-    const data = arr.filter((file) => validExtensions.includes(file.type));
+    const data: ISaveImage[] = arr
+      .filter((file) => validExtensions.includes(file.type))
+      .map((file, i) => {
+        const image = file;
+        const arrayName = file.name.split(".");
+        arrayName.pop();
+        const title = arrayName.join("");
+        const main = i === 0 ? true : false;
+        return { image, title, main };
+      });
     setArchivosImg(data);
   }
 
