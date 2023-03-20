@@ -14,59 +14,60 @@ import FormErrorMessage from "../styled-component/forms/FormErrorMessage";
 import InputText from "../styled-component/forms/InputText";
 import SubmitButton from "../styled-component/forms/SubmitButton";
 import FormStyled from "./styled-components/FomStyled";
-import { Console } from "console";
-import { string } from "yup";
-import { IPurchase } from "@/models/purchase.interface";
-import { ISupplier } from "@/models/supplier.interface";
-import { supplierService } from "@/services/supplier.service";
-import { purchaseService } from "@/services/purchase.service";
+
 import { PurchaseFormSchema } from "@/validations/purchase.validation";
+import { IPurchaseDetail } from "@/models/purchase-detail.interface";
+import { purchaseDetailService } from "@/services/purchase-detail.service";
+import { PurchaseDetailFormSchema } from "@/validations/purchase_detail.service";
 
 export interface FormInterface {
+  id_compra: any;
   type: string;
   title: string;
-  data: IPurchase;
+  data: IPurchaseDetail;
   handleCloseModal: () => void;
-  getPurchase: () => Promise<void>;
+  getPurchaseDetail: () => Promise<void>;
 }
 
 export const Form: React.FC<FormInterface> = ({
+  id_compra,
   type = "CREATE",
   title,
   data,
   handleCloseModal,
-  getPurchase,
+  getPurchaseDetail,
 }) => {
   // Difiniendo valores iniciales
   console.log("Data: ", data);
 
-  const initialValues: IPurchase = {
-    supplier: data.id_supplier?.id_supplier ?? "",
-    description: data.description ?? "",
+  const initialValues: IPurchaseDetail = {
+    product: data.id_product?.id_product ?? "",
+    purchase: data.id_purchase?.id_purchase ?? "",
+    units: data.units ?? 0,
     total_price: data.total_price ?? 0,
-    date_purchase: data.date_purchase ?? "",
   };
 
-  const [suppliers, setSuppliers] = useState<ISupplier[] | null>(null);
+  const [product, setProduct] = useState<IProduct[] | null>(null);
 
   const handleGetSuppliers = async () => {
-    setSuppliers((await supplierService.getAll()).data);
+    setProduct((await productService.getAll()).data);
+    console.log(product)
   };
 
   const handleSubmit = async (
-    values: IPurchase,
-    helpers: FormikHelpers<IPurchase>
+    values: IPurchaseDetail,
+    helpers: FormikHelpers<IPurchaseDetail>
   ) => {
     // console.log("Hola como estas");
     // console.log(values);
 
     if (type === "CREATE") {
-      await purchaseService
+      await purchaseDetailService
         .create(values)
         .then((res) => {
           helpers.setSubmitting(false);
           handleCloseModal();
-          getPurchase();
+          getPurchaseDetail();
           Swal.fire({
             text: `${title} registrado con éxito`,
             icon: "success",
@@ -80,19 +81,18 @@ export const Form: React.FC<FormInterface> = ({
             icon: "error",
           });
         });
-    }
-    else if (type === "UPDATE") {
+    } else if (type === "UPDATE") {
       console.log("ACtualizando", values);
-      const idPurchase = data.id_purchase;
-      console.log(idPurchase);
-      if (!idPurchase) return;
+      const idPurchaseDetail = data.id_purchase_detail;
+      console.log(idPurchaseDetail);
+      if (!idPurchaseDetail) return;
 
-      await purchaseService
-        .update(values, idPurchase)
+      await purchaseDetailService
+        .update(values, idPurchaseDetail)
         .then((res) => {
           helpers.setSubmitting(false);
           handleCloseModal();
-          getPurchase();
+          getPurchaseDetail();
           Swal.fire({
             text: `${title} actualizado con éxito`,
             icon: "success",
@@ -115,7 +115,7 @@ export const Form: React.FC<FormInterface> = ({
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={PurchaseFormSchema}
+      validationSchema={PurchaseDetailFormSchema}
       enableReinitialize
       onSubmit={handleSubmit}
     >
@@ -126,22 +126,30 @@ export const Form: React.FC<FormInterface> = ({
         errors,
         setFieldValue,
         handleChange,
-      }: FormikProps<IPurchase>) => (
+      }: FormikProps<IPurchaseDetail>) => (
         <FormStyled className="d-flex flex-column gap-4 py-5 px-5">
           <div className="row">
             <div className="col-md-6">
+              <InputText
+                className=""
+                id="id_purchase"
+                type="text"
+                name="id_purchase"
+                value={id_compra}
+                autoComplete="off"
+              />
               <div className="mb-3">
-                <label htmlFor="description" className="fw-semibold pb-2">
-                  Descripcion
+                <label htmlFor="units" className="fw-semibold pb-2">
+                  Unidades
                 </label>
                 <InputText
-                  id="description"
-                  type="text"
-                  name="description"
-                  placeholder="Escriba la descripcion"
+                  id="units"
+                  type="number"
+                  name="units"
+                  placeholder="Escriba las unidades"
                   autoComplete="off"
                 />
-                <FormErrorMessage name="description" component={"d"} />
+                <FormErrorMessage name="units" component={"d"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="total_price" className="fw-semibold pb-2">
@@ -157,39 +165,23 @@ export const Form: React.FC<FormInterface> = ({
                 <FormErrorMessage name="total_price" component={"p"} />
               </div>
               <div className="mb-3">
-                <label htmlFor="date_purchase" className="fw-semibold pb-2">
-                  Precio
-                </label>
-                <InputText
-                  id="date_purchase"
-                  type="date"
-                  name="date_purchase"
-                  placeholder="Escriba el Precio"
-                  autoComplete="off"
-                />
-                <FormErrorMessage name="date_purchase" component={"p"} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="id_supplier" className="fw-semibold pb-2">
-                  Proveedores
+                <label htmlFor="id_product" className="fw-semibold pb-2">
+                  Productos
                 </label>
                 <Field
                   as="select"
-                  id="id_supplier"
+                  id="id_product"
                   className="form-select p-3"
-                  name="id_supplier"
+                  name="id_product"
                 >
-                  <option value="">-- Selecciona un proveedor --</option>
-                  {suppliers?.map((supplier) => (
-                    <option
-                      key={supplier.id_supplier}
-                      value={supplier.id_supplier}
-                    >
-                      {supplier.name}
+                  <option value="">-- Selecciona un producto --</option>
+                  {product?.map((product) => (
+                    <option key={product.id_product} value={product.id_product}>
+                      {product.name}
                     </option>
                   ))}
                 </Field>
-                <FormErrorMessage name="id_supplier" component={"p"} />
+                <FormErrorMessage name="id_product" component={"p"} />
               </div>
             </div>
           </div>

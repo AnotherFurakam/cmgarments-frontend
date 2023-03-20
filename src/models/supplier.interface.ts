@@ -1,3 +1,5 @@
+import { IPurchase } from "./purchase.interface";
+
 export interface IGetAll {
   totalPages: number;
   actualPage: number;

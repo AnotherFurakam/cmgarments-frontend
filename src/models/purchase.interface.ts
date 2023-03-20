@@ -14,6 +14,6 @@ export interface IPurchase {
   description: string;
   total_price: number;
   date_purchase: string;
-  id_supplier?: string;
-  supplier?: ISupplier;
+  supplier?: string;
+  id_supplier?: ISupplier;
 }
