@@ -16,7 +16,10 @@ import SubmitButton from "../styled-component/forms/SubmitButton";
 import FormStyled from "./styled-components/FomStyled";
 
 import { PurchaseFormSchema } from "@/validations/purchase.validation";
-import { IPurchaseDetail } from "@/models/purchase-detail.interface";
+import {
+  IPurchaseDetail,
+  IPurchaseDetailPost,
+} from "@/models/purchase-detail.interface";
 import { purchaseDetailService } from "@/services/purchase-detail.service";
 import { PurchaseDetailFormSchema } from "@/validations/purchase_detail.service";
 
@@ -40,26 +43,28 @@ export const Form: React.FC<FormInterface> = ({
   // Difiniendo valores iniciales
   console.log("Data: ", data);
 
-  const initialValues: IPurchaseDetail = {
-    product: data.id_product?.id_product ?? "",
-    purchase: data.id_purchase?.id_purchase ?? "",
+  const initialValues: IPurchaseDetailPost = {
+    id_product: data.id_product?.id_product ?? "",
+    id_purchase: id_compra,
     units: data.units ?? 0,
-    total_price: data.total_price ?? 0,
+    price: data.price ?? 0,
   };
+
+  console.log(initialValues);
 
   const [product, setProduct] = useState<IProduct[] | null>(null);
 
   const handleGetSuppliers = async () => {
     setProduct((await productService.getAll()).data);
-    console.log(product)
+    console.log(product);
   };
 
   const handleSubmit = async (
-    values: IPurchaseDetail,
-    helpers: FormikHelpers<IPurchaseDetail>
+    values: IPurchaseDetailPost,
+    helpers: FormikHelpers<IPurchaseDetailPost>
   ) => {
     // console.log("Hola como estas");
-    // console.log(values);
+    console.log(values);
 
     if (type === "CREATE") {
       await purchaseDetailService
@@ -77,7 +82,7 @@ export const Form: React.FC<FormInterface> = ({
           console.log(err);
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.message,
+            text: err.response.data.message,
             icon: "error",
           });
         });
@@ -126,18 +131,10 @@ export const Form: React.FC<FormInterface> = ({
         errors,
         setFieldValue,
         handleChange,
-      }: FormikProps<IPurchaseDetail>) => (
+      }: FormikProps<IPurchaseDetailPost>) => (
         <FormStyled className="d-flex flex-column gap-4 py-5 px-5">
           <div className="row">
             <div className="col-md-6">
-              <InputText
-                className=""
-                id="id_purchase"
-                type="text"
-                name="id_purchase"
-                value={id_compra}
-                autoComplete="off"
-              />
               <div className="mb-3">
                 <label htmlFor="units" className="fw-semibold pb-2">
                   Unidades
@@ -152,17 +149,17 @@ export const Form: React.FC<FormInterface> = ({
                 <FormErrorMessage name="units" component={"d"} />
               </div>
               <div className="mb-3">
-                <label htmlFor="total_price" className="fw-semibold pb-2">
+                <label htmlFor="price" className="fw-semibold pb-2">
                   Precio total
                 </label>
                 <InputText
-                  id="color"
+                  id="price"
                   type="number"
-                  name="total_price"
-                  placeholder="Escriba el precio total"
+                  name="price"
+                  placeholder="Escriba el precio"
                   autoComplete="off"
                 />
-                <FormErrorMessage name="total_price" component={"p"} />
+                <FormErrorMessage name="price" component={"p"} />
               </div>
               <div className="mb-3">
                 <label htmlFor="id_product" className="fw-semibold pb-2">

@@ -13,8 +13,9 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const columns = {
-  description: "Description",
   total_price: "Precio total",
+  description: "Description",
+
   date_purchase: "Fecha de compra",
   id_supplier: "Proveedor",
 };
@@ -96,7 +97,7 @@ function Purchase() {
   const getPurchaseDetailByIdPurchase = (id: string) => {
     const purchase = purchases?.find((p) => p.id_purchase === id);
     const id_purchase = purchase?.id_purchase;
-    return id_purchase
+    return id_purchase;
   };
 
   const handleDeletePurchase = async (id: string): Promise<void> => {
