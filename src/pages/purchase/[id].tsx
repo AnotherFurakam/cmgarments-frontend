@@ -14,13 +14,13 @@ import { Form } from "@/components/purchase_detail/Form";
 
 const columns = {
   units: "Unidades",
-  total_price: "Precio total",
+  price: "Precio total",
   id_product: "Producto",
 };
 
 const initialValues: IPurchaseDetail = {
   units: 0,
-  total_price: 0,
+  price: 0,
   product: "",
   purchase: "",
 };
@@ -28,8 +28,9 @@ const initialValues: IPurchaseDetail = {
 interface ICleanPurchaseDetail {
   id_purchase_detail?: string;
   units: number;
-  total_price: number;
+  price: number;
   id_product?: string;
+  id_purchase?: string;
 }
 
 function PurchaseDetail() {
@@ -51,15 +52,15 @@ function PurchaseDetail() {
   const cleanPurchaseDetails = (purchase: IPurchaseDetail[]) => {
     const newPurchaseDetail = purchase.map((e) => {
       const id_purchase_detail = e.id_purchase_detail;
-      const total_price = e.total_price;
+      const price = e.price;
       const units = e.units;
       const id_product = e.id_product?.name;
-      const id_purchase = e.id_purchase?.description;
+      const id_purchase = e.id_purchase?.id_purchase;
       console.log(id_purchase);
 
       return {
         id_purchase_detail,
-        total_price,
+        price,
         units,
         id_product,
         id_purchase,
@@ -81,7 +82,7 @@ function PurchaseDetail() {
   //Funcion para cerrar modal
   const handleCloseModal = () => {
     setIsOpenModal(false);
-    if (selectPurchaseDetails.id_purchase)
+    if (selectPurchaseDetails.id_purchase_detail)
       setSelectPurchaseDetails(initialValues);
   };
 
