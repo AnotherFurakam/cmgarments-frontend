@@ -19,6 +19,7 @@ import { useState } from "react";
 import { authService } from "@/services/auth.service";
 // import { NextResponse, NextRequest } from "next/server";
 import Router from "next/router";
+import Swal from "sweetalert2";
 
 interface ILogin {
   username: string;
@@ -39,10 +40,27 @@ const LoginAdminForm = () => {
   };
 
   const hadleSubmit = async (data: ILogin) => {
-    const { access_token } = await authService.login(data);
-    console.log(access_token);
+    console.log(data.username, data.password);
 
-    Router.push("/");
+    if (data.username.length <= 0 || data.password.length <= 0) {
+      Swal.fire({
+        text: `Rellene todos lo campos`,
+        icon: "error",
+      });
+      return;
+    }
+
+    try {
+      const { access_token } = await authService.login(data);
+      console.log(access_token);
+      Router.push("/");
+    } catch (e) {
+      console.log(e);
+      Swal.fire({
+        text: `Error de credenciales`,
+        icon: "error",
+      });
+    }
   };
 
   return (

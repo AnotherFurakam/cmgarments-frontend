@@ -35,7 +35,7 @@ const Form: React.FC<FormInterface> = ({ idProduct, loadImages }) => {
         const main = i === 0 ? true : false;
         return { image, title, main };
       });
-    setArchivosImg(data);
+    if (data.length > 0) setArchivosImg(data);
   }
 
   const getImageLength = (): number => (archivosImg ? archivosImg.length : 0);
