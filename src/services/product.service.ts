@@ -12,7 +12,7 @@ const create = async (body: IProduct): Promise<IProduct> => {
 };
 
 //? obtener producto
-const getAll = async (limit = 10, page = 1): Promise<IGetAllProducts> => {
+const getAll = async (limit = 8, page = 1): Promise<IGetAllProducts> => {
   const res = await Api.get(`/product?limit=${limit}&page=${page}`);
   return res.data;
 };
@@ -55,24 +55,31 @@ const filterByDateProduct = async (dateStart: string, dateEnd: string) => {
     `/product/filter/items?dateStart=${dateStart}&dateEnd=${dateEnd}`
   );
   return res.data;
-}
+};
 
 //* Obtener cantidad de productos
 const getProductQuantity = async () => {
-  const res = await Api.get(
-    `/product/count/quantity`
-  );
+  const res = await Api.get(`/product/count/quantity`);
   return res.data;
-}
+};
 
 //* Obtener cantidad de productos
 const getRecentProducts = async (quantity: number) => {
-  const res = await Api.get(
-    `/product/recents/items?quantity=${quantity}`
-  );
+  const res = await Api.get(`/product/recents/items?quantity=${quantity}`);
   return res.data;
-}
+};
 
+//? Obtener por Categoría
+const getProductsByCategory = async (id: string): Promise<IGetAllProducts> => {
+  const res = await Api.get(`/product/category/${id}`);
+  return res.data;
+};
+
+//? Obtener por Marca
+const getProductsByBrand = async (id: string): Promise<IGetAllProducts> => {
+  const res = await Api.get(`/product/brand/${id}`);
+  return res.data;
+};
 
 const productService = {
   create,
@@ -84,7 +91,9 @@ const productService = {
   searchProducts,
   filterByDateProduct,
   getProductQuantity,
-  getRecentProducts
+  getRecentProducts,
+  getProductsByCategory,
+  getProductsByBrand,
 };
 
 export { productService };

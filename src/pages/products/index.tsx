@@ -8,14 +8,14 @@ import { productService } from "@/services/product.service";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { ICategory } from "@/models/category.interface";
-import { category } from "@/services/category.service";
 import Swal from "sweetalert2";
 import { ImageModal } from "@/components/Product/ImageModal";
 import { SearchBar } from "@/components/Product/SearchBar";
 import { ProductsState, useProductStore } from "@/store/ProductStore";
 import { shallow } from "zustand/shallow";
 import { DateFilter } from "@/components/Product/DateFilter";
+import { SelectCategory } from "@/components/Product/SelectCategory";
+import { SelectBrand } from "@/components/SelectBrand";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -103,7 +103,10 @@ function Product() {
   };
 
   //Store de productos
-  const { products, setProducts }: ProductsState = useProductStore((state: ProductsState): ProductsState => state, shallow)
+  const { products, setProducts }: ProductsState = useProductStore(
+    (state: ProductsState): ProductsState => state,
+    shallow
+  );
 
   // Obtener todos los Productos:
   const getProduct = async (): Promise<void> => {
@@ -164,8 +167,12 @@ function Product() {
   };
 
   useEffect(() => {
-    getProduct()
+    getProduct();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(products);
+  // }, [products]);
 
   return (
     <BaseLayout>
@@ -173,7 +180,7 @@ function Product() {
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
             <div className="d-flex justify-content-between mt-2 mb-4">
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center me-5">
                 <Image
                   src="/images/png/product-select.png"
                   alt="Producto"
@@ -181,11 +188,19 @@ function Product() {
                   height={60}
                   className="me-3 img-fluid"
                 />
-                <h1 className="fw-bold fs-3" onClick={getProduct} style={{cursor: 'pointer'}}>Productos</h1>
+                <h1
+                  className="fw-bold fs-3"
+                  onClick={getProduct}
+                  style={{ cursor: "pointer" }}
+                >
+                  Productos
+                </h1>
               </div>
-              <div className="d-flex align-items-center gap-3">
-                <DateFilter/>
+              <div className="d-flex flex-wrap align-items-center justify-content-end gap-4">
+                <DateFilter />
                 <SearchBar />
+                <SelectCategory />
+                <SelectBrand />
                 <ButtonAddStyle type="button" onClick={handleOpenModal}>
                   <span className="d-d-inline-block me-3">Agregar</span>
                   <FaPlus />
