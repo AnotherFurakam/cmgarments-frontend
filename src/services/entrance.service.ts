@@ -1,14 +1,15 @@
 import Api from "@/config/Api";
-import { IEntrance, IGetEntrance } from "@/models/entrance.interface";
+import { IEntrance } from "@/models/entrance.interface";
 import { IGetAll } from "@/models/global.interface";
 
 //? crear ENTRADA
 const create = async (body: IEntrance): Promise<IEntrance> => {
-  return await Api.post("/entrance", body);
+  const res = await Api.post("/entrance", body);
+  return res.data;
 };
 
 //? obtener ENTRADA
-const getAll = async (page = 1, limit = 8): Promise<IGetAll<IGetEntrance>> => {
+const getAll = async (page = 1, limit = 8): Promise<IGetAll<IEntrance>> => {
   const res = await Api.get(`/entrance?limit=${limit}&page=${page}`);
   return res.data;
 };
