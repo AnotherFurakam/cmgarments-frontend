@@ -1,5 +1,6 @@
 import Api from "@/config/Api";
-import { IGetAll, IPurchase } from "@/models/purchase.interface";
+import { IGetAll } from "@/models/global.interface";
+import { IGetPurchase, IPurchase } from "@/models/purchase.interface";
 
 //? crear compra
 const create = async (body: IPurchase): Promise<IPurchase> => {
@@ -7,7 +8,7 @@ const create = async (body: IPurchase): Promise<IPurchase> => {
 };
 
 //? obtener compra
-const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
+const getAll = async (limit = 10, page = 1): Promise<IGetAll<IPurchase>> => {
   const res = await Api.get(`/purchase?limit=${limit}&page=${page}`);
   return res.data;
 };
@@ -17,9 +18,15 @@ const update = async (body: IPurchase, id: string): Promise<IPurchase> => {
   return await Api.put(`/purchase/${id}`, body);
 };
 
-// //? eliminar compra
+//? eliminar compra
 const _delete = async (id: string): Promise<IPurchase> => {
   return await Api.delete(`/purchase/${id}`);
+};
+
+//? obtener ENTRADA
+const getByNumber = async (nro: number): Promise<IGetPurchase> => {
+  const res = await Api.get(`/purchase/number/${nro}`);
+  return res.data;
 };
 
 const purchaseService = {
@@ -27,6 +34,7 @@ const purchaseService = {
   getAll,
   update,
   delete: _delete,
+  getByNumber,
 };
 
 export { purchaseService };
