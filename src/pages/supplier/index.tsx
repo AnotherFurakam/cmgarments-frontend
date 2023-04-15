@@ -136,6 +136,7 @@ function Supplier() {
               colums={columns}
               crudButtons
               customButton={false}
+              customButtonSale={false}
               customButtonTitle={""}
               customFunction={() => {}}
               editFunction={handleEditLocal}

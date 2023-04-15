@@ -50,6 +50,11 @@ const sidebarItems = [
     href: "/purchase",
     icon: "/purchase.png",
   },
+  {
+    name: "Ventas",
+    href: "/sale",
+    icon: "/purchase.png",
+  },
 ];
 
 export default function Sidebar() {

@@ -148,6 +148,7 @@ function PurchaseDetail() {
             colums={columns}
             crudButtons
             customButton={false}
+            customButtonSale={false}
             customButtonTitle={""}
             customFunction={() => {}}
             editFunction={handleEditPurchase}
