@@ -111,7 +111,7 @@ function Entrance() {
   const checkEntrance = (data: IEntrance) => {
     console.log("entro");
 
-    data.description = data.description + purchase?.id_supplier.name;
+    data.description = `${data.description} - ${purchase?.id_supplier.name}`;
 
     if (detailEntrance !== null) {
       const exists = detailEntrance.some(

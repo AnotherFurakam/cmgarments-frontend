@@ -13,10 +13,10 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const columns = {
-  total_price: "Precio total",
+  nro: "Nro",
   description: "Description",
-
   date_purchase: "Fecha de compra",
+  total_price: "Precio total",
   id_supplier: "Proveedor",
 };
 
@@ -53,13 +53,15 @@ function Purchase() {
       const description = e.description;
       const date_purchase = e.date_purchase;
       const id_supplier = e.id_supplier?.name;
+      const nro = e.nro;
       console.log(id_supplier);
 
       return {
         id_purchase,
-        total_price,
+        nro,
         description,
         date_purchase,
+        total_price,
         id_supplier,
       };
     });
