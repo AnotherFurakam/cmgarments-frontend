@@ -13,6 +13,8 @@ import { ISale } from "@/models/sale.interface";
 import { SaleService } from "@/services/sale.service";
 import TableActionButton from "@/components/Table/styled-component/TableActionButton";
 import { BsImages } from "react-icons/bs";
+import Pagination from "@/components/Pagination/Pagination";
+import { IGetAll } from "@/models/global.interface";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -32,21 +34,21 @@ const initialValues: ISale = {
 
 function Sale() {
     // estado de categorias y modal
-    const [sale, setSale] = useState<ISale[] | null>(null);
+    const [sale, setSale] = useState<IGetAll<ISale> | null>(null);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [deleteBoolean, setdeleteBoolean] = useState(false);
     const [selectedSale, setSelectedSale] =
         useState<ISale>(initialValues);
 
     // obtener ventas
-    const getSales = async (): Promise<void> => {
-        const sales = await SaleService.getAll();
-        setSale(sales.data);
+    const getSales = async (page?: number): Promise<void> => {
+        const sales = await SaleService.getAll(page);
+        setSale(sales);
     };
 
     // obtener venta seleccionada
     const searchSelectedSale = (id: string) =>
-    sale?.find((p) => p.id_sale === id);
+    sale?.data.find((p) => p.id_sale === id);
     
     const mapSaleData = (sales: ISale[]) => {
         return sales.map(sale => {
@@ -114,7 +116,7 @@ function Sale() {
                             
                         </div>
                         <Table
-                            data={sale ? mapSaleData(sale) : null}
+                            data={sale?.data ? mapSaleData(sale.data) : null}
                             colums={colums}
                             crudButtons
                             customButton={false}
@@ -125,6 +127,7 @@ function Sale() {
                             editFunction={() => {}}
                             deleteFunction={handleDeleteSale}
                         />
+                        <Pagination actualPage={sale?.actualPage} nextPage={sale?.nextPage} totalPage={sale?.totalPages} prevPage={sale?.prevPage} getContentFn={getSales} />
                         <Modal
                             title="de Venta"   
                             type="DETAIL"
