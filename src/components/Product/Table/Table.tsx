@@ -4,6 +4,7 @@ import TableHead from "../../Table/styled-component/TableHead";
 import Tabule from "../../Table/styled-component/Table";
 import TableBody from "../../Table/styled-component/TableBody";
 import TableActionButton from "../../Table/styled-component/TableActionButton";
+import Truncate from "../../styled-component/forms/truncate";
 import { MdEdit } from "react-icons/md";
 import { BsImages, BsXLg } from "react-icons/bs";
 // import { FaCog } from "react-icons/fa";
@@ -78,18 +79,18 @@ const Table: React.FC<TableInterface> = ({
           {data &&
             data.map((d) => {
               return (
-                <tr key={Object.values<any>(d)[0]}>
-                  <td>{d.name}</td>
-                  <td>{d.category?.name}</td>
-                  <td>{d.size}</td>
-									<td>{d.brand?.name}</td>
-                  <td>{d.gender}</td>
-                  <td>{d.description}</td>
-                  <td>{d.stock}</td>
-                  <td>{d.price}</td>
-                  <td>{d.color}</td>
-                  <td>{d.state ? 'Habilitado' : 'Desabilitado'}</td>
-                  <td className="d-flex justify-content-center gap-2">
+                <tr className="" key={Object.values<any>(d)[0]}>
+                  <Truncate>{d.name}</Truncate>
+                  <Truncate>{d.category?.name}</Truncate>
+                  <Truncate>{d.size}</Truncate>
+									<Truncate>{d.brand?.name}</Truncate>
+                  <Truncate>{d.gender}</Truncate>
+                  <Truncate>{d.description}</Truncate>
+                  <Truncate>{d.stock}</Truncate>
+                  <Truncate>{d.price}</Truncate>
+                  <Truncate>{d.color}</Truncate>
+                  <Truncate>{d.state ? 'Habilitado' : 'Desabilitado'}</Truncate>
+                  <Truncate className="d-flex justify-content-center gap-2">
                     {crudButtons && (
                       <>
                         <TableActionButton
@@ -120,7 +121,7 @@ const Table: React.FC<TableInterface> = ({
                         <BsImages color="#fff" size={35} />
                       </TableActionButton>
                     )}
-                  </td>
+                  </Truncate>
                 </tr>
               );
             })}
