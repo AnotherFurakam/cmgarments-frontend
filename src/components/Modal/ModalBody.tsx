@@ -43,9 +43,9 @@ const ModalBody: React.FC<ModalInterface> = ({
             <ModalHeader>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3 className="fs-4 m-0 text-white fw-semibold">{`${
-                    type === "UPDATE" ? "Actualizar" : "Añadir"
-                  } ${title}`}</h3>
+                <h3 className="fs-4 m-0 text-white fw-semibold">{`${
+                  type === "UPDATE" ? "Actualizar" : type === "CREATE" ? "Añadir" : "Detalle"
+                } ${title}`}</h3>
                 </div>
               </div>
               <div>

@@ -206,6 +206,7 @@ function Entrance() {
                 colums={colums}
                 crudButtons
                 customButton={false}
+                customButtonSale={false}
                 customButtonTitle={""}
                 customFunction={() => {}}
                 editFunction={() => {}}

@@ -108,6 +108,7 @@ function Category() {
               colums={colums}
               crudButtons
               customButton={false}
+              customButtonSale={false}
               customButtonTitle={""}
               customFunction={() => {}}
               editFunction={handleEditCategory}
