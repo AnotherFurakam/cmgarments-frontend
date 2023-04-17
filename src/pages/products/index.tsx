@@ -16,6 +16,8 @@ import { shallow } from "zustand/shallow";
 import { DateFilter } from "@/components/Product/DateFilter";
 import { SelectCategory } from "@/components/Product/SelectCategory";
 import { SelectBrand } from "@/components/SelectBrand";
+import { IGetAll } from "@/models/global.interface";
+import Pagination from "@/components/Pagination/Pagination";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -64,7 +66,7 @@ function Product() {
   const [productsForTable, setProductForTable] = useState<
     ICleanProduct[] | null | undefined
   >(null);
-  const [productos, setProductos] = useState<IProduct[] | null>(null);
+  const [productos, setProductos] = useState<IGetAll<IProduct> | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectProduct, setSelectProduct] = useState<IProduct>(initialValues);
   // estado modal imagen
@@ -109,10 +111,10 @@ function Product() {
   );
 
   // Obtener todos los Productos:
-  const getProduct = async (): Promise<void> => {
-    const product = await productService.getAll();
+  const getProduct = async (page: number = 1): Promise<void> => {
+    const product = await productService.getAll(page);
     setProducts(product);
-    setProductos(product.data);
+    setProductos(product);
     cleanProduct(products?.data);
   };
 
@@ -190,7 +192,7 @@ function Product() {
                 />
                 <h1
                   className="fw-bold fs-3"
-                  onClick={getProduct}
+                  onClick={(e) => getProduct(1)}
                   style={{ cursor: "pointer" }}
                 >
                   Productos
@@ -216,6 +218,13 @@ function Product() {
               customFunction={handleImage}
               editFunction={handleEditLocal}
               deleteFunction={handleDeleteProduct}
+            />
+            <Pagination
+              actualPage={products?.actualPage}
+              nextPage={products?.nextPage}
+              totalPage={products?.totalPages}
+              prevPage={products?.prevPage}
+              getContentFn={getProduct}
             />
             <Modal
               title="Producto"

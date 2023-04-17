@@ -48,43 +48,12 @@ const initialValues: IEntrance = {
 function Entrance() {
   // estado de categorias y modal
   const [entrances, setEntrances] = useState<IGetAll<IEntrance> | null>(null);
-  // const [entrancesTable, setEntrancesTable] = useState<ICleanEntrance[] | null>(
-  //   null
-  // );
   const [purchase, setPurchase] = useState<IGetPurchase | null>(null);
   const [detailEntrance, setDetailEntrance] = useState<IEntrance[] | null>(
     null
   );
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-  // const [selectedEntrances, setSelectedEntrances] =
-  //   useState<IEntrance>(initialValues);
-
-  // const cleanEntrances = (product: IEntrance[]) => {
-  //   const newProduct: ICleanEntrance[] = product.map((e) => {
-  //     const id_entrance = e.id_entrance;
-  //     const description = e.description;
-  //     const product = e.product.name;
-  //     const supplier = e.supplier.name;
-  //     const units = e.units;
-  //     const unit_cost = e.unit_cost;
-  //     const total_price = units * unit_cost;
-  //     const deliver_date = e.create_at;
-
-  //     return {
-  //       id_entrance,
-  //       description,
-  //       product,
-  //       supplier,
-  //       units,
-  //       unit_cost,
-  //       total_price,
-  //       deliver_date,
-  //     };
-  //   });
-
-  //   setEntrancesTable(newProduct);
-  // };
 
   // obtener categorias
   const getEntrances = async (page: number = 1): Promise<void> => {
@@ -139,34 +108,6 @@ function Entrance() {
     });
     handleCloseModal();
   };
-
-  // const handleEditEntrance = (id: string): void => {
-  //   const entrance = entrances?.data.find((c) => c.id_entrance === id);
-  //   setSelectedEntrances(entrance || initialValues);
-  //   // console.log(entrance);P
-
-  //   handleOpenModal();
-  // };
-
-  //! implementar a futuro
-  // const handleDeleteEntrance = async (id: string): Promise<void> => {
-  //   await entranceService
-  //     .delete(id)
-  //     .then((res) => {
-  //       Swal.fire(
-  //         "Eliminado!",
-  //         "El registro fue eliminado con éxito",
-  //         "success"
-  //       );
-  //       getEntrances();
-  //     })
-  //     .catch((err) => {
-  //       Swal.fire({
-  //         text: err.message,
-  //         icon: "error",
-  //       });
-  //     });
-  // };
 
   useEffect(() => {
     getEntrances();

@@ -1,5 +1,8 @@
 import BaseLayout from "@/components/BaseLayout";
-import { IEmployee } from "@/models/employee.interface";
+import {
+  IEmployee,
+  IEmployee as IEmployeeS,
+} from "@/models/employee.interface";
 import React, { useEffect, useState } from "react";
 import { employeeService } from "@/services/employee.service";
 import { Table } from "@/components/Table";
@@ -9,6 +12,8 @@ import { FaPlus } from "react-icons/fa";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Employee/Form";
 import Swal from "sweetalert2";
+import { IGetAll } from "@/models/global.interface";
+import Pagination from "@/components/Pagination/Pagination";
 
 const colums = {
   names: "Nombre",
@@ -20,7 +25,7 @@ const colums = {
   role: "Rol",
 };
 
-const initialValues: IEmployee = {
+const initialValues: IEmployeeS = {
   names: "",
   first_lastname: "",
   second_lastname: "",
@@ -32,13 +37,13 @@ const initialValues: IEmployee = {
 };
 
 function Employee() {
-  const [employees, setEmployees] = useState<IEmployee[] | null>(null);
+  const [employees, setEmployees] = useState<IGetAll<IEmployee> | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectEmployee, setSelectEmployee] =
-    useState<IEmployee>(initialValues);
+    useState<IEmployeeS>(initialValues);
 
-  const cleanEmployee = (employee: IEmployee[]) => {
-    const newEmployee = employee.map((e) => {
+  const cleanEmployee = (employee: IGetAll<IEmployee>) => {
+    const newEmployee: IEmployeeS[] = employee.data.map((e) => {
       const id_employee = e.id_employee;
       const names = e.names;
       const first_lastname = e.first_lastname;
@@ -64,15 +69,15 @@ function Employee() {
       };
     });
 
-    setEmployees(newEmployee);
+    setEmployees({ ...employee, data: newEmployee });
   };
 
   // Obtener todos los empleados:
-  const getEmployees = async (): Promise<void> => {
+  const getEmployees = async (page: number = 1): Promise<void> => {
     const employees = await employeeService.getAll();
     //console.log(employees.data);
 
-    cleanEmployee(employees.data);
+    cleanEmployee(employees);
   };
 
   //Funcion para cerrar modal
@@ -86,7 +91,7 @@ function Employee() {
   };
 
   const handleEditLocal = (id: string): void => {
-    const employee = employees?.find((c) => c.id_employee === id);
+    const employee = employees?.data.find((c) => c.id_employee === id);
     setSelectEmployee(employee || initialValues);
     console.log(employee);
 
@@ -140,7 +145,7 @@ function Employee() {
               </div>
             </div>
             <Table
-              data={employees}
+              data={employees?.data}
               colums={colums}
               crudButtons
               customButton={false}
@@ -149,6 +154,13 @@ function Employee() {
               customFunction={() => {}}
               editFunction={handleEditLocal}
               deleteFunction={handleDeleteEmployee}
+            />
+            <Pagination
+              actualPage={employees?.actualPage}
+              nextPage={employees?.nextPage}
+              totalPage={employees?.totalPages}
+              prevPage={employees?.prevPage}
+              getContentFn={getEmployees}
             />
             <Modal
               title="Empleado"
