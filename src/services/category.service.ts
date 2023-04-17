@@ -8,8 +8,8 @@ const create = async (body: ICategory): Promise<ICategory> => {
 };
 
 //? obtener CATEGORIAS
-const getAll = async (limit = 10, page = 1): Promise<IGetAll<ICategory>> => {
-  const res = await Api.get(`/category?limit=${limit}&page=${page}`);
+const getAll = async (page = 1): Promise<IGetAll<ICategory>> => {
+  const res = await Api.get(`/category?limit=${8}&page=${page}`);
   return res.data;
 };
 

@@ -2,13 +2,18 @@ import BaseLayout from "@/components/BaseLayout";
 import { Modal } from "@/components/Modal";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Table } from "@/components/Table";
-import { ISupplier } from "@/models/supplier.interface";
+import {
+  ISupplier,
+  ISupplier as ISupplierS,
+} from "@/models/supplier.interface";
 import { supplierService } from "@/services/supplier.service";
 import { Form } from "@/components/Supplier/Form";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { IGetAll } from "@/models/global.interface";
+import Pagination from "@/components/Pagination/Pagination";
 
 const columns = {
   name: "Nombre",
@@ -19,7 +24,7 @@ const columns = {
   state: "Estado",
 };
 
-const initialValues: ISupplier = {
+const initialValues: ISupplierS = {
   name: "",
   description: "",
   address: "",
@@ -29,14 +34,14 @@ const initialValues: ISupplier = {
 };
 
 function Supplier() {
-  const [suppliers, setSuppliers] = useState<ISupplier[] | null>(null);
+  const [suppliers, setSuppliers] = useState<IGetAll<ISupplierS> | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectSupplier, setSelectSupplier] =
-    useState<ISupplier>(initialValues);
+    useState<ISupplierS>(initialValues);
 
   //Limpiar data
-  const cleanSupplier = (employee: ISupplier[]) => {
-    const newSupplier = employee.map((e) => {
+  const cleanSupplier = (employee: IGetAll<ISupplier>) => {
+    const newSupplier: ISupplier[] = employee.data.map((e) => {
       const id_supplier = e.id_supplier;
       const name = e.name;
       const description = e.description;
@@ -56,15 +61,13 @@ function Supplier() {
       };
     });
 
-    setSuppliers(newSupplier);
+    setSuppliers({ ...employee, data: newSupplier });
   };
 
   // Obtener todos los proveedores
-  const getSuppliers = async (): Promise<void> => {
-    const suppliers = await supplierService.getAll();
-    //console.log(suppliers.data);
-
-    cleanSupplier(suppliers.data);
+  const getSuppliers = async (page: number = 1): Promise<void> => {
+    const data: IGetAll<ISupplier> = await supplierService.getAll(page);
+    cleanSupplier(data);
   };
 
   //Funcion para cerrar modal
@@ -78,7 +81,7 @@ function Supplier() {
   };
 
   const handleEditLocal = (id: string): void => {
-    const supplier = suppliers?.find((c) => c.id_supplier === id);
+    const supplier = suppliers?.data.find((c) => c.id_supplier === id);
     setSelectSupplier(supplier || initialValues);
     console.log(supplier);
 
@@ -132,7 +135,7 @@ function Supplier() {
               </div>
             </div>
             <Table
-              data={suppliers}
+              data={suppliers?.data}
               colums={columns}
               crudButtons
               customButton={false}
@@ -141,6 +144,13 @@ function Supplier() {
               customFunction={() => {}}
               editFunction={handleEditLocal}
               deleteFunction={handleDeleteEmployee}
+            />
+            <Pagination
+              actualPage={suppliers?.actualPage}
+              nextPage={suppliers?.nextPage}
+              totalPage={suppliers?.totalPages}
+              prevPage={suppliers?.prevPage}
+              getContentFn={getSuppliers}
             />
             <Modal
               title="Proveedor"

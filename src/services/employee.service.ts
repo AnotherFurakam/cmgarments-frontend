@@ -1,5 +1,6 @@
 import Api from "@/config/Api";
-import { IGetAll, IEmployee } from "@/models/employee.interface";
+import { IEmployee } from "@/models/employee.interface";
+import { IGetAll } from "@/models/global.interface";
 
 //? crear empleado
 const create = async (body: IEmployee): Promise<IEmployee> => {
@@ -7,8 +8,8 @@ const create = async (body: IEmployee): Promise<IEmployee> => {
 };
 
 //? obtener empleado
-const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
-  const res = await Api.get(`/employee?limit=${limit}&page=${page}`);
+const getAll = async (page = 1): Promise<IGetAll<IEmployee>> => {
+  const res = await Api.get(`/employee?limit=${8}&page=${page}`);
   return res.data;
 };
 
@@ -24,19 +25,16 @@ const _delete = async (id: string): Promise<IEmployee> => {
 
 //* Obtener cantidad de empleados
 const getEmployeeQuantity = async () => {
-  const res = await Api.get(
-    `/employee/count/quantity`
-  );
+  const res = await Api.get(`/employee/count/quantity`);
   return res.data;
-}
-
+};
 
 const employeeService = {
   create,
   getAll,
   update,
   delete: _delete,
-  getEmployeeQuantity
+  getEmployeeQuantity,
 };
 
 export { employeeService };
