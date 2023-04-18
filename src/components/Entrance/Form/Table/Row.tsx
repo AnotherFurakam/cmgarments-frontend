@@ -30,11 +30,12 @@ const Row: React.FC<FormInterface> = ({ data, saveEntrance }) => {
         )}
       </th>
       <td>{data.id_product.name}</td>
+      <td>{data.id_product.size}</td>
       <td>{data.id_product.color}</td>
       <td>{data.id_product.brand.name}</td>
       <td>S/.{data.price}</td>
       <td>{data.units}</td>
-      <td>S/.{Number(data.price) * data.units}</td>
+      <td>S/.{(Number(data.price) * data.units).toFixed(2)}</td>
     </tr>
   );
 };

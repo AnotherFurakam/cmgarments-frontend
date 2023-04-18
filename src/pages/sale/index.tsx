@@ -75,6 +75,7 @@ function Sale() {
     };
 
     const handleDeleteSale = async (id: string): Promise<void> => {
+        console.log(id)
         await SaleService
             .delete(id)
             .then((res) => {
@@ -118,7 +119,7 @@ function Sale() {
                         <Table
                             data={sale?.data ? mapSaleData(sale.data) : null}
                             colums={colums}
-                            crudButtons
+                            crudButtons={false}
                             customButton={false}
                             customButtonSale={true}
                             isDelete={deleteBoolean}                            

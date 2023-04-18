@@ -14,6 +14,8 @@ import Pagination from "@/components/Pagination/Pagination";
 import SearchPurchase from "@/components/Entrance/SearchPurchase";
 import { purchaseService } from "@/services/purchase.service";
 import { IGetPurchase } from "@/models/purchase.interface";
+import { purchaseDetailService } from "@/services/purchase-detail.service";
+
 
 // //* interface para la información de la tabla
 // interface ICleanEntrance {
@@ -88,8 +90,12 @@ function Entrance() {
 
   // obtener categorias
   const getEntrances = async (page: number = 1): Promise<void> => {
-    const entrance = await entranceService.getAll(page);
-    setEntrances(entrance);
+    try {
+      const entrance = await entranceService.getAll(page);
+      setEntrances(entrance);
+    } catch (error) {
+      
+    }
   };
 
   // funcion para cerra el modal
@@ -104,12 +110,12 @@ function Entrance() {
 
   const searchPurchase = async (nro: number) => {
     const data = await purchaseService.getByNumber(nro);
+    console.log(data)
     setPurchase(data);
     handleOpenModal();
   };
 
   const checkEntrance = (data: IEntrance) => {
-    console.log("entro");
 
     data.description = `${data.description} - ${purchase?.id_supplier.name}`;
 
@@ -135,7 +141,15 @@ function Entrance() {
   ) => {
     e.preventDefault();
     await detailEntrance?.forEach(async (d) => {
-      const data = await entranceService.create(d);
+      const pdetail = await purchaseDetailService.getone(d.id_purchase_detail)
+      if(pdetail.received){
+          console.log("YA REGISTRADO XDDDDDDD")
+      }
+      else{
+          const data = await entranceService.create(d);
+          console.log("Registrado")
+          getEntrances()
+      }
     });
     handleCloseModal();
   };
@@ -148,37 +162,35 @@ function Entrance() {
   //   handleOpenModal();
   // };
 
-  //! implementar a futuro
-  // const handleDeleteEntrance = async (id: string): Promise<void> => {
-  //   await entranceService
-  //     .delete(id)
-  //     .then((res) => {
-  //       Swal.fire(
-  //         "Eliminado!",
-  //         "El registro fue eliminado con éxito",
-  //         "success"
-  //       );
-  //       getEntrances();
-  //     })
-  //     .catch((err) => {
-  //       Swal.fire({
-  //         text: err.message,
-  //         icon: "error",
-  //       });
-  //     });
-  // };
+  const handleDeleteEntrance = async (id: string): Promise<void> => {
+    await entranceService
+      .delete(id)
+      .then((res) => {
+        Swal.fire(
+          "Eliminado!",
+          "El registro fue eliminado con éxito",
+          "success"
+        );
+        getEntrances();
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.message,
+          icon: "error",
+        });
+      });
+  };
 
   useEffect(() => {
     getEntrances();
-  }, []);
+  }, [purchase, setPurchase]);
 
   useEffect(() => {
     getEntrances();
-  }, [purchase]);
+  }, [purchase, setPurchase]);
 
   useEffect(() => {
-    console.log(detailEntrance);
-  }, [detailEntrance]);
+  }, [detailEntrance, purchase, setPurchase]);
 
   return (
     <BaseLayout>
@@ -200,17 +212,18 @@ function Entrance() {
                 <SearchPurchase search={searchPurchase} />
               </div>
             </div>
-            {entrances !== null ? (
+            {entrances?.data && entrances.data.length > 0 ? (
               <Table
-                data={entrances.data}
+                data={entrances?.data}
                 colums={colums}
                 crudButtons
+                isEdit={false}
                 customButton={false}
                 customButtonSale={false}
                 customButtonTitle={""}
                 customFunction={() => {}}
                 editFunction={() => {}}
-                deleteFunction={() => {}}
+                deleteFunction={handleDeleteEntrance}
               />
             ) : (
               <h2>No hay Entrada de Productos</h2>

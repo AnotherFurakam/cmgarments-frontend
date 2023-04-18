@@ -64,8 +64,8 @@ export const Form: React.FC<FormInterface> = ({ type = "CREATE", data }) => {
                             <td>{sale.product.name}</td>
                             <td>{sale.product.size}</td>
                             <td>{sale.units}</td>
-                            <td>{sale.product.price}</td>
-                            <td>{sale.product.price * sale.units}</td>
+                            <td>{sale.price}</td>
+                            <td>{sale.price * sale.units}</td>
                         </tr>
                     ))}
                     <tr className="table-active font-weight-bold">

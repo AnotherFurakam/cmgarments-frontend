@@ -11,16 +11,19 @@ import { Modal } from "@/components/Modal";
 import Link from "next/link";
 import { BiArrowBack } from "react-icons/bi";
 import { Form } from "@/components/purchase_detail/Form";
+import BaseLayout from "@/components/BaseLayout";
+import { purchaseService } from "@/services/purchase.service";
+import { IPurchase } from "@/models/purchase.interface";
 
 const columns = {
-  units: "Unidades",
   price: "Precio total",
+  units: "Unidades",
   id_product: "Producto",
 };
 
 const initialValues: IPurchaseDetail = {
   units: 0,
-  price: 0,
+  price: "0",
   product: "",
   purchase: "",
 };
@@ -28,7 +31,7 @@ const initialValues: IPurchaseDetail = {
 interface ICleanPurchaseDetail {
   id_purchase_detail?: string;
   units: number;
-  price: number;
+  price: string;
   id_product?: string;
   id_purchase?: string;
 }
@@ -47,6 +50,8 @@ function PurchaseDetail() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectPurchaseDetails, setSelectPurchaseDetails] =
     useState<IPurchaseDetail>(initialValues);
+
+    console.log(id)
 
   //Limpiar data
   const cleanPurchaseDetails = (purchase: IPurchaseDetail[]) => {
@@ -72,11 +77,13 @@ function PurchaseDetail() {
   };
 
   // Obtener todo el detalle de compra por id compra:
-  const getPurchase = async (): Promise<void> => {
-    const purchase = await purchaseDetailService.getAllByIdPurchase(id);
-    console.log(purchase.data);
-    cleanPurchaseDetails(purchase.data);
-    setPurchaseDetails(purchase.data);
+  const getPurchaseDetail = async (): Promise<void> => {
+    if(id){
+      const purchasedetail = await purchaseDetailService.getAllByIdPurchase(id);
+      console.log(purchasedetail.data);
+      cleanPurchaseDetails(purchasedetail.data);
+      setPurchaseDetails(purchasedetail.data);
+    }
   };
 
   //Funcion para cerrar modal
@@ -106,7 +113,7 @@ function PurchaseDetail() {
           "El registro fue eliminado con éxito",
           "success"
         );
-        getPurchase();
+        getPurchaseDetail();
       })
       .catch((err) => {
         Swal.fire({
@@ -117,10 +124,11 @@ function PurchaseDetail() {
   };
 
   useEffect(() => {
-    getPurchase();
-  }, []);
+    getPurchaseDetail();
+  }, [id]);
 
   return (
+    <BaseLayout>
     <div className="bg-main px-4 py-5">
       <div className="bg-white rounded-4">
         <div className="py-4 px-5">
@@ -177,12 +185,13 @@ function PurchaseDetail() {
               title="Compra"
               data={selectPurchaseDetails}
               handleCloseModal={handleCloseModal}
-              getPurchaseDetail={getPurchase}
+              getPurchaseDetail={getPurchaseDetail}
             />
           </Modal>
         </div>
       </div>
     </div>
+    </BaseLayout>
   );
 }
 

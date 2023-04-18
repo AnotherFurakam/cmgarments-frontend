@@ -13,6 +13,12 @@ const getAll = async (limit = 10, page = 1): Promise<IGetAll<IPurchase>> => {
   return res.data;
 };
 
+//? obtener compra
+const getAllGood = async (limit = 10, page = 1): Promise<IGetAll<IPurchase>> => {
+  const res = await Api.get(`/purchase?limit=${limit}&page=${page}`);
+  return res.data;
+};
+
 //? actualizar compra
 const update = async (body: IPurchase, id: string): Promise<IPurchase> => {
   return await Api.put(`/purchase/${id}`, body);

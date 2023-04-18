@@ -31,6 +31,11 @@ const sidebarItems = [
     icon: "/supplier.png",
   },
   {
+    name: "P/Proveedores",
+    href: "/productsupplier",
+    icon: "/employee.png",
+  },
+  {
     name: "Entradas",
     href: "/entrance",
     icon: "/entrace.png",

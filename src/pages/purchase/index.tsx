@@ -67,13 +67,11 @@ function Purchase() {
     });
 
     setPurchaseForTable(newPurchase);
-    console.log(newPurchase);
   };
 
   // Obtener todos los Productos:
   const getPurchase = async (): Promise<void> => {
     const purchase = await purchaseService.getAll();
-    console.log(purchase.data);
 
     cleanPurchase(purchase.data);
     setPurchases(purchase.data);
