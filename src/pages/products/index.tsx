@@ -16,6 +16,7 @@ import { shallow } from "zustand/shallow";
 import { DateFilter } from "@/components/Product/DateFilter";
 import { SelectCategory } from "@/components/Product/SelectCategory";
 import { SelectBrand } from "@/components/SelectBrand";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -40,7 +41,7 @@ const initialValues: IProduct = {
   id_brand: "",
   gender: "",
   description: "",
-  price: 0,
+  price: "",
   stock: 0,
   color: "",
   state: true,
@@ -51,7 +52,7 @@ interface ICleanProduct {
   name: string;
   size: string;
   color: string;
-  price: number;
+  price: string;
   stock: number;
   gender: string;
   description: string;
@@ -176,6 +177,7 @@ function Product() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
@@ -243,6 +245,7 @@ function Product() {
           </div>
         </div>
       </div>
+      </AdminMain>
     </BaseLayout>
   );
 }

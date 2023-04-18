@@ -14,6 +14,7 @@ import { Form } from "@/components/purchase_detail/Form";
 import BaseLayout from "@/components/BaseLayout";
 import { purchaseService } from "@/services/purchase.service";
 import { IPurchase } from "@/models/purchase.interface";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 const columns = {
   price: "Precio total",
@@ -129,6 +130,7 @@ function PurchaseDetail() {
 
   return (
     <BaseLayout>
+    <AdminMain>
     <div className="bg-main px-4 py-5">
       <div className="bg-white rounded-4">
         <div className="py-4 px-5">
@@ -191,6 +193,7 @@ function PurchaseDetail() {
         </div>
       </div>
     </div>
+    </AdminMain>
     </BaseLayout>
   );
 }

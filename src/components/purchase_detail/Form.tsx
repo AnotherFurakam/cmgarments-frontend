@@ -21,7 +21,7 @@ import {
     IPurchaseDetailPost,
 } from "@/models/purchase-detail.interface";
 import { purchaseDetailService } from "@/services/purchase-detail.service";
-import { PurchaseDetailFormSchema } from "@/validations/purchase_detail.service";
+import { PurchaseDetailFormSchema } from "@/validations/purchase_detail.validation";
 import { IProductSupplier } from "@/models/productsupplier.interface";
 import { productSupplierService } from "@/services/productsupplier.service";
 import { purchaseService } from "@/services/purchase.service";

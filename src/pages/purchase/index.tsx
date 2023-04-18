@@ -1,6 +1,7 @@
 import BaseLayout from "@/components/BaseLayout";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/purchase/Form";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Table } from "@/components/Table";
 import TablePurchase from "@/components/Table-Purchase/Table";
@@ -125,6 +126,7 @@ function Purchase() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
@@ -174,6 +176,7 @@ function Purchase() {
           </div>
         </div>
       </div>
+      </AdminMain>
     </BaseLayout>
   );
 }

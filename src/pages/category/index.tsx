@@ -9,6 +9,7 @@ import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Category/Form";
 import Swal from "sweetalert2";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -82,6 +83,7 @@ function Category() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
@@ -131,6 +133,7 @@ function Category() {
           </div>
         </div>
       </div>
+      </AdminMain>
     </BaseLayout>
   );
 }

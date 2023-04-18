@@ -9,6 +9,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 const columns = {
   name: "Nombre",
@@ -110,6 +111,7 @@ function Supplier() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
@@ -159,6 +161,7 @@ function Supplier() {
           </div>
         </div>
       </div>
+      </AdminMain>
     </BaseLayout>
   );
 }

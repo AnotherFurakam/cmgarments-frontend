@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { SidebarContext } from "./SidebarContext";
-
+import styles from "./Sidebar.module.css";
 const sidebarItems = [
   {
     name: "Dashboard",
@@ -102,8 +102,8 @@ export default function Sidebar() {
               </h2>
             </div>
           </div>
-          <div className="container-sidebar d-flex align-items-center h-80">
-            <ul className="sidebar__list w-100">
+          <div className={`container-sidebar d-flex align-items-center h-80`}>
+          <ul className={`${styles.sidebar__list} w-100`}>
               {sidebarItems.map((item) => (
                 <li className="sidebar__item" key={item.name}>
                   <Link href={item.href} className="sidebar__link">
@@ -134,6 +134,7 @@ export default function Sidebar() {
               <span className="sidebar__name">Cerrar Sesión</span>
             </Link>
           </div>
+          <div className="sidebar__logo-name align-items-center py-2"></div>
         </aside>
       </div>
     </div>

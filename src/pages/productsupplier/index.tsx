@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { IProductSupplier } from "@/models/productsupplier.interface";
 import { productSupplierService } from "@/services/productsupplier.service";
 import { Form } from "@/components/ProductSupplier/Form";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -109,6 +110,7 @@ function ProductSupplier() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
@@ -157,6 +159,7 @@ function ProductSupplier() {
           </div>
         </div>
       </div>
+      </AdminMain>
     </BaseLayout>
   );
 }
