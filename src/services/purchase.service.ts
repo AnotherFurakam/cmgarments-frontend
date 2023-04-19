@@ -8,8 +8,8 @@ const create = async (body: IPurchase): Promise<IPurchase> => {
 };
 
 //? obtener compra
-const getAll = async (limit = 10, page = 1): Promise<IGetAll<IPurchase>> => {
-  const res = await Api.get(`/purchase?limit=${limit}&page=${page}`);
+const getAll = async (page = 1): Promise<IGetAll<IPurchase>> => {
+  const res = await Api.get(`/purchase?limit=${8}&page=${page}`);
   return res.data;
 };
 

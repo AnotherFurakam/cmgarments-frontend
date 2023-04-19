@@ -1,12 +1,13 @@
+import { IGetAll } from "@/models/global.interface";
 import { IImage, ISaveImage } from "@/models/image.interface";
-import { IGetAllProducts } from "@/models/product.interface";
+import { IGetAllProducts, IProduct } from "@/models/product.interface";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface ProductsState {
-  products: IGetAllProducts | null;
+  products: IGetAll<IProduct> | null;
   images: IImage[] | null;
-  setProducts: (products: IGetAllProducts) => void;
+  setProducts: (products: IGetAll<IProduct>) => void;
   setImages: (images: IImage[]) => void;
 }
 
@@ -19,7 +20,7 @@ export const useProductStore = create<
       ({
         products: null,
         images: null,
-        setProducts: (products: IGetAllProducts) => {
+        setProducts: (products: IGetAll<IProduct>) => {
           set((state) => ({
             products: products,
           }));

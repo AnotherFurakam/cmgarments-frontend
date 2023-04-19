@@ -1,4 +1,5 @@
 import Api from "@/config/Api";
+import { IGetAll } from "@/models/global.interface";
 import { IImage, ISaveImage } from "@/models/image.interface";
 import {
   IGetAllProducts,
@@ -12,8 +13,8 @@ const create = async (body: IProduct): Promise<IProduct> => {
 };
 
 //? obtener producto
-const getAll = async (limit = 8, page = 1): Promise<IGetAllProducts> => {
-  const res = await Api.get(`/product?limit=${limit}&page=${page}`);
+const getAll = async (page = 1): Promise<IGetAll<IProduct>> => {
+  const res = await Api.get(`/product?limit=${8}&page=${page}`);
   return res.data;
 };
 

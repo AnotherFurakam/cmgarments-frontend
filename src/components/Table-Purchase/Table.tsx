@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 export interface TableInterface {
   colums: any;
-  data: any[] | null;
+  data: any[] | null | undefined;
   crudButtons: boolean;
   customButton: boolean;
   customButtonTitle: string;

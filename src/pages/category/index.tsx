@@ -10,6 +10,8 @@ import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Category/Form";
 import Swal from "sweetalert2";
 import { AdminMain } from "@/components/styled-component/AdminMain";
+import Pagination from "@/components/Pagination/Pagination";
+import { IGetAll } from "@/models/global.interface";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -22,22 +24,20 @@ const colums = {
 const initialValues: ICategory = {
   name: "",
   sizes: "",
-  products: []
+  products: [],
 };
 
 function Category() {
   // estado de categorias y modal
-  const [categories, setCategories] = useState<ICategory[] | null>(null);
+  const [categories, setCategories] = useState<IGetAll<ICategory> | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<ICategory>(initialValues);
 
   // obtener categorias
-  const getCategories = async (): Promise<void> => {
-    const categories = await category.getAll();
-    // console.log(categories.data);
-
-    setCategories(categories.data);
+  const getCategories = async (page: number = 1): Promise<void> => {
+    const categories = await category.getAll(page);
+    setCategories(categories);
   };
 
   // funcion para cerra el modal
@@ -51,7 +51,7 @@ function Category() {
   };
 
   const handleEditCategory = (id: string): void => {
-    const category = categories?.find((c) => c.id_category === id);
+    const category = categories?.data.find((c) => c.id_category === id);
     setSelectedCategory(category || initialValues);
     console.log(category);
 
@@ -106,7 +106,7 @@ function Category() {
               </div>
             </div>
             <Table
-              data={categories}
+              data={categories?.data}
               colums={colums}
               crudButtons
               customButton={false}
@@ -115,6 +115,13 @@ function Category() {
               customFunction={() => {}}
               editFunction={handleEditCategory}
               deleteFunction={handleDeleteCategory}
+            />
+            <Pagination
+              actualPage={categories?.actualPage}
+              nextPage={categories?.nextPage}
+              totalPage={categories?.totalPages}
+              prevPage={categories?.prevPage}
+              getContentFn={getCategories}
             />
             <Modal
               title="Categoría"

@@ -1,5 +1,8 @@
 import BaseLayout from "@/components/BaseLayout";
-import { IEmployee } from "@/models/employee.interface";
+import {
+  IEmployee,
+  IEmployee as IEmployeeS,
+} from "@/models/employee.interface";
 import React, { useEffect, useState } from "react";
 import { employeeService } from "@/services/employee.service";
 import { Table } from "@/components/Table";
@@ -10,6 +13,8 @@ import { Modal } from "@/components/Modal";
 import { Form } from "@/components/Employee/Form";
 import Swal from "sweetalert2";
 import { AdminMain } from "@/components/styled-component/AdminMain";
+import { IGetAll } from "@/models/global.interface";
+import Pagination from "@/components/Pagination/Pagination";
 
 const colums = {
     names: "Nombre",

@@ -1,5 +1,6 @@
 import Api from "@/config/Api";
-import { IGetAll, ISupplier } from "@/models/supplier.interface";
+import { IGetAll } from "@/models/global.interface";
+import { ISupplier } from "@/models/supplier.interface";
 
 //? crear proveedor
 const create = async (body: ISupplier): Promise<ISupplier> => {
@@ -7,8 +8,8 @@ const create = async (body: ISupplier): Promise<ISupplier> => {
 };
 
 //? obtener proveedor
-const getAll = async (limit = 10, page = 1): Promise<IGetAll> => {
-  const res = await Api.get(`/supplier?limit=${limit}&page=${page}`);
+const getAll = async (page = 1): Promise<IGetAll<ISupplier>> => {
+  const res = await Api.get(`/supplier?limit=${8}&page=${page}`);
   return res.data;
 };
 
@@ -24,19 +25,16 @@ const _delete = async (id: string): Promise<ISupplier> => {
 
 //* Obtener cantidad de proveedores
 const getSupplierQuantity = async () => {
-  const res = await Api.get(
-    `/supplier/count/quantity`
-  );
+  const res = await Api.get(`/supplier/count/quantity`);
   return res.data;
-}
-
+};
 
 const supplierService = {
   create,
   getAll,
   update,
   delete: _delete,
-  getSupplierQuantity
+  getSupplierQuantity,
 };
 
 export { supplierService };

@@ -1,11 +1,16 @@
 import BaseLayout from "@/components/BaseLayout";
 import { Modal } from "@/components/Modal";
+import Pagination from "@/components/Pagination/Pagination";
 import { Form } from "@/components/purchase/Form";
 import { AdminMain } from "@/components/styled-component/AdminMain";
 import ButtonAddStyle from "@/components/styled-component/ButtonAddStyle";
 import { Table } from "@/components/Table";
 import TablePurchase from "@/components/Table-Purchase/Table";
-import { IPurchase } from "@/models/purchase.interface";
+import { IGetAll } from "@/models/global.interface";
+import {
+  IPurchase,
+  IPurchase as IPurchaseS,
+} from "@/models/purchase.interface";
 import { purchaseService } from "@/services/purchase.service";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -21,7 +26,7 @@ const columns = {
   id_supplier: "Proveedor",
 };
 
-const initialValues: IPurchase = {
+const initialValues: IPurchaseS = {
   description: "",
   total_price: 0,
   date_purchase: "",
@@ -38,17 +43,16 @@ interface ICleanPurchase {
 // ----------------
 
 function Purchase() {
-  const [purchaseForTable, setPurchaseForTable] = useState<
-    ICleanPurchase[] | null
-  >(null);
-  const [purchases, setPurchases] = useState<IPurchase[] | null>(null);
+  const [purchaseForTable, setPurchaseForTable] =
+    useState<IGetAll<ICleanPurchase> | null>(null);
+  const [purchases, setPurchases] = useState<IGetAll<IPurchase> | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectPurchase, setSelectPurchase] =
-    useState<IPurchase>(initialValues);
+    useState<IPurchaseS>(initialValues);
 
   //Limpiar data
-  const cleanPurchase = (purchase: IPurchase[]) => {
-    const newPurchase = purchase.map((e) => {
+  const cleanPurchase = (purchase: IGetAll<IPurchase>) => {
+    const newPurchase: ICleanPurchase[] = purchase.data.map((e) => {
       const id_purchase = e.id_purchase;
       const total_price = e.total_price;
       const description = e.description;
@@ -67,15 +71,17 @@ function Purchase() {
       };
     });
 
-    setPurchaseForTable(newPurchase);
+    setPurchaseForTable({ ...purchase, data: newPurchase });
+    console.log(newPurchase);
   };
 
   // Obtener todos los Productos:
-  const getPurchase = async (): Promise<void> => {
-    const purchase = await purchaseService.getAll();
+  const getPurchase = async (page: number = 1): Promise<void> => {
+    const purchase = await purchaseService.getAll(page);
+    console.log(purchase.data);
 
-    cleanPurchase(purchase.data);
-    setPurchases(purchase.data);
+    cleanPurchase(purchase);
+    setPurchases(purchase);
   };
 
   //Funcion para cerrar modal
@@ -89,14 +95,14 @@ function Purchase() {
   };
 
   const handleEditPurchase = (id: string): void => {
-    const purchase = purchases?.find((p) => p.id_purchase === id);
+    const purchase = purchases?.data.find((p) => p.id_purchase === id);
     console.log("editProductoLocal", purchase);
     setSelectPurchase(purchase || initialValues);
     handleOpenModal();
   };
 
   const getPurchaseDetailByIdPurchase = (id: string) => {
-    const purchase = purchases?.find((p) => p.id_purchase === id);
+    const purchase = purchases?.data.find((p) => p.id_purchase === id);
     const id_purchase = purchase?.id_purchase;
     return id_purchase;
   };
@@ -149,7 +155,7 @@ function Purchase() {
               </div>
             </div>
             <TablePurchase
-              data={purchaseForTable}
+              data={purchaseForTable?.data}
               colums={columns}
               crudButtons
               customButton={false}
@@ -158,6 +164,13 @@ function Purchase() {
               editFunction={handleEditPurchase}
               deleteFunction={handleDeletePurchase} //Eliminar
               goPurchaseDetail={getPurchaseDetailByIdPurchase} //Ir a detalle de la compra
+            />
+            <Pagination
+              actualPage={purchaseForTable?.actualPage}
+              nextPage={purchaseForTable?.nextPage}
+              totalPage={purchaseForTable?.totalPages}
+              prevPage={purchaseForTable?.prevPage}
+              getContentFn={getPurchase}
             />
             <Modal
               title="Compra"
