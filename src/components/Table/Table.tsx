@@ -5,7 +5,7 @@ import Tabule from "./styled-component/Table";
 import TableBody from "./styled-component/TableBody";
 import TableActionButton from "./styled-component/TableActionButton";
 import { MdEdit } from "react-icons/md";
-import { BsBank, BsImages, BsInfoCircle, BsXLg, BsZoomIn } from "react-icons/bs";
+import { BsBank, BsCardImage, BsEye, BsImages, BsInfoCircle, BsXLg, BsZoomIn } from "react-icons/bs";
 // import { FaCog } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { IoEyeSharp } from "react-icons/io5";
@@ -15,9 +15,10 @@ export interface TableInterface {
   data: any[] | null | undefined;
   crudButtons: boolean;
   customButton: boolean;
-  customButtonSale: boolean;
+  customButtonSale?: boolean;
   customButtonTitle: string;
   isDelete?: Boolean;
+  isEdit?: Boolean;
   editFunction: (id: any) => void;
   deleteFunction: (id: any) => void;
   customFunction: (id: any) => void;
@@ -30,6 +31,7 @@ const Table: React.FC<TableInterface> = ({
   customButton = false,
   customButtonSale = false,
   isDelete = false ,
+  isEdit = true,
   customButtonTitle = "Título del botón",
   editFunction,
   deleteFunction,
@@ -106,25 +108,50 @@ const Table: React.FC<TableInterface> = ({
                     );
                   })}
                   <td className="d-flex justify-content-center gap-2">
-                    {crudButtons && (
+                    {customButtonSale && (
+                        <>
+                        <TableActionButton
+                          type="button"
+                          color="#246fff"
+                          onClick={() =>
+                            handleCustomAction(Object.values<any>(d)[0])
+                          }
+                        >
+                          {/* <span>{customButtonTitle}</span> */}
+                          <BsEye color="#fff" size={35} />
+                        </TableActionButton>
+                        </>
+                      )}
+                    {crudButtons ? (
                       <>
-                        {customButtonSale ? (
+                      
+                      {isEdit ? (
+                          <>
                             <TableActionButton
-                              type="button"
-                              color="#3d9d53"
-                              onClick={() => handleCustomAction(Object.values<any>(d)[0])}
-                            >
-                              <IoEyeSharp color="#fff" size={35} />
-                            </TableActionButton>
-                          ) : (
-                            <TableActionButton
-                              type="button"
-                              color="#000000"
-                              onClick={() => handleEdit(Object.values<any>(d)[0])}
-                            >
-                              <MdEdit color="#fff" size={35} />
-                            </TableActionButton>
-                          )}
+                          type="button"
+                          color="#111D13"
+                          onClick={() => handleEdit(Object.values<any>(d)[0])}
+                        >
+                          <MdEdit color="#fff" size={35} />
+                        </TableActionButton>
+                        <TableActionButton
+                        type="button"
+                        color={d.is_delete ?(
+                              "#690d0d"
+                            ):(
+                              "#BD4949"
+                            )}
+                        onClick={() => handleDelete(Object.values<any>(d)[0], d.is_delete)}
+                      >
+                        {d.is_delete ?(
+                              <FaBan color="#fff" size={35} />
+                            ):(
+                              <BsXLg color="#fff" size={35} />
+                            )}
+                      </TableActionButton>
+                          </>
+                          
+                      ):(
                         <TableActionButton
                           type="button"
                           color={d.is_delete ?(
@@ -140,19 +167,27 @@ const Table: React.FC<TableInterface> = ({
                                 <BsXLg color="#fff" size={35} />
                               )}
                         </TableActionButton>
+                      )}
+                          <p></p>
                       </>
-                    )}
-                    {customButton && (
-                      <TableActionButton
-                        type="button"
-                        color="#246fff"
-                        onClick={() =>
-                          handleCustomAction(Object.values<any>(d)[0])
-                        }
-                      >
-                        {/* <span>{customButtonTitle}</span> */}
-                        <BsImages color="#fff" size={35} />
-                      </TableActionButton>
+                    ):(
+                      <div>
+                          <TableActionButton
+                          type="button"
+                          color={d.is_delete ?(
+                                "#690d0d"
+                              ):(
+                                "#BD4949"
+                              )}
+                          onClick={() => handleDelete(Object.values<any>(d)[0], d.is_delete)}
+                        >
+                          {d.is_delete ?(
+                                <FaBan color="#fff" size={35} />
+                              ):(
+                                <BsXLg color="#fff" size={35} />
+                              )}
+                        </TableActionButton>
+                      </div>
                     )}
                   </td>
                 </tr>

@@ -2,6 +2,7 @@ import BaseLayout from "@/components/BaseLayout";
 import { ProductCard } from "@/components/Dashboard/ProductCard";
 import { QuantityCard } from "@/components/Dashboard/QuantityCard";
 import { DashboardContainer } from "@/components/Dashboard/dashboard-styled-components";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 import { IProduct, IProductWithImages } from "@/models/product.interface";
 import { employeeService } from "@/services/employee.service";
 import { productService } from "@/services/product.service";
@@ -72,6 +73,7 @@ export default function Home() {
 
   return (
     <BaseLayout>
+    <AdminMain>
       <DashboardContainer>
         <div className="d-flex justify-content-between">
           <QuantityCard type={productQuantity.type} quantity={productQuantity.total} image="/images/dashboard/products.png" />
@@ -92,6 +94,7 @@ export default function Home() {
           </div>
         </div>
       </DashboardContainer>
+      </AdminMain>
     </BaseLayout>
   );
 }

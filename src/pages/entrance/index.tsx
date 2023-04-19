@@ -14,6 +14,8 @@ import Pagination from "@/components/Pagination/Pagination";
 import SearchPurchase from "@/components/Entrance/SearchPurchase";
 import { purchaseService } from "@/services/purchase.service";
 import { IGetPurchase } from "@/models/purchase.interface";
+import { purchaseDetailService } from "@/services/purchase-detail.service";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 // //* interface para la información de la tabla
 // interface ICleanEntrance {
@@ -31,157 +33,228 @@ import { IGetPurchase } from "@/models/purchase.interface";
 //* la key es la key de las categories
 //*segun estas propiedades es la información q mostrara
 const colums = {
-  description: "Descripción",
-  units: "Unidades",
-  unit_cost: "Costo Unitario",
-  total_price: "Precio Total",
-  // create_at: "Fecha Entrega",
+    description: "Descripción",
+    units: "Unidades",
+    unit_cost: "Costo Unitario",
+    total_price: "Precio Total",
+    // create_at: "Fecha Entrega",
 };
 
 const initialValues: IEntrance = {
-  id_entrance: "",
-  description: "",
-  units: 0,
-  unit_cost: "",
+    id_entrance: "",
+    description: "",
+    units: 0,
+    unit_cost: "",
 };
 
 function Entrance() {
-  // estado de categorias y modal
-  const [entrances, setEntrances] = useState<IGetAll<IEntrance> | null>(null);
-  const [purchase, setPurchase] = useState<IGetPurchase | null>(null);
-  const [detailEntrance, setDetailEntrance] = useState<IEntrance[] | null>(
-    null
-  );
+    // estado de categorias y modal
+    const [entrances, setEntrances] = useState<IGetAll<IEntrance> | null>(null);
+    // const [entrancesTable, setEntrancesTable] = useState<ICleanEntrance[] | null>(
+    //   null
+    // );
+    const [purchase, setPurchase] = useState<IGetPurchase | null>(null);
+    const [detailEntrance, setDetailEntrance] = useState<IEntrance[] | null>(
+        null
+    );
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    // const [selectedEntrances, setSelectedEntrances] =
+    //   useState<IEntrance>(initialValues);
 
-  // obtener categorias
-  const getEntrances = async (page: number = 1): Promise<void> => {
-    const entrance = await entranceService.getAll(page);
-    setEntrances(entrance);
-  };
+    // const cleanEntrances = (product: IEntrance[]) => {
+    //   const newProduct: ICleanEntrance[] = product.map((e) => {
+    //     const id_entrance = e.id_entrance;
+    //     const description = e.description;
+    //     const product = e.product.name;
+    //     const supplier = e.supplier.name;
+    //     const units = e.units;
+    //     const unit_cost = e.unit_cost;
+    //     const total_price = units * unit_cost;
+    //     const deliver_date = e.create_at;
 
-  // funcion para cerra el modal
-  const handleCloseModal = (): void => {
-    setIsOpenModal(false);
-    if (purchase?.id_purchase) setPurchase(null);
-    if (detailEntrance !== null && detailEntrance?.length > 0)
-      setPurchase(null);
-  };
+    //     return {
+    //       id_entrance,
+    //       description,
+    //       product,
+    //       supplier,
+    //       units,
+    //       unit_cost,
+    //       total_price,
+    //       deliver_date,
+    //     };
+    //   });
 
-  const handleOpenModal = (): void => setIsOpenModal(true);
+    //   setEntrancesTable(newProduct);
+    // };
 
-  const searchPurchase = async (nro: number) => {
-    const data = await purchaseService.getByNumber(nro);
-    setPurchase(data);
-    handleOpenModal();
-  };
+    // obtener categorias
+    const getEntrances = async (page: number = 1): Promise<void> => {
+        try {
+            const entrance = await entranceService.getAll(page);
+            setEntrances(entrance);
+        } catch (error) {}
+    };
 
-  const checkEntrance = (data: IEntrance) => {
-    console.log("entro");
+    // funcion para cerra el modal
+    const handleCloseModal = (): void => {
+        setIsOpenModal(false);
+        if (purchase?.id_purchase) setPurchase(null);
+        if (detailEntrance !== null && detailEntrance?.length > 0)
+            setPurchase(null);
+    };
 
-    data.description = `${data.description} - ${purchase?.id_supplier.name}`;
+    const handleOpenModal = (): void => setIsOpenModal(true);
 
-    if (detailEntrance !== null) {
-      const exists = detailEntrance.some(
-        (detail) => detail.id_purchase_detail === data.id_purchase_detail
-      );
+    const searchPurchase = async (nro: number) => {
+        const data = await purchaseService.getByNumber(nro);
+        console.log(data);
+        setPurchase(data);
+        handleOpenModal();
+    };
 
-      if (exists) {
-        const newDetail = detailEntrance.filter(
-          (detail) => detail.id_purchase_detail !== data.id_purchase_detail
-        );
-        setDetailEntrance([...newDetail]);
-        return;
-      } else setDetailEntrance([...detailEntrance, data]);
-    } else {
-      setDetailEntrance([data]);
-    }
-  };
+    const checkEntrance = (data: IEntrance) => {
+        data.description = `${data.description} - ${purchase?.id_supplier.name}`;
 
-  const saveEntrance = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    await detailEntrance?.forEach(async (d) => {
-      const data = await entranceService.create(d);
-    });
-    handleCloseModal();
-  };
+        if (detailEntrance !== null) {
+            const exists = detailEntrance.some(
+                (detail) =>
+                    detail.id_purchase_detail === data.id_purchase_detail
+            );
 
-  useEffect(() => {
-    getEntrances();
-  }, []);
+            if (exists) {
+                const newDetail = detailEntrance.filter(
+                    (detail) =>
+                        detail.id_purchase_detail !== data.id_purchase_detail
+                );
+                setDetailEntrance([...newDetail]);
+                return;
+            } else setDetailEntrance([...detailEntrance, data]);
+        } else {
+            setDetailEntrance([data]);
+        }
+    };
 
-  useEffect(() => {
-    getEntrances();
-  }, [purchase]);
+    const saveEntrance = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        await detailEntrance?.forEach(async (d) => {
+            const pdetail = await purchaseDetailService.getone(
+                d.id_purchase_detail
+            );
+            if (pdetail.received) {
+                console.log("YA REGISTRADO XDDDDDDD");
+            } else {
+                const data = await entranceService.create(d);
+                console.log("Registrado");
+                getEntrances();
+            }
+        });
+        handleCloseModal();
+    };
 
-  useEffect(() => {
-    console.log(detailEntrance);
-  }, [detailEntrance]);
+    // const handleEditEntrance = (id: string): void => {
+    //   const entrance = entrances?.data.find((c) => c.id_entrance === id);
+    //   setSelectedEntrances(entrance || initialValues);
+    //   // console.log(entrance);P
 
-  return (
-    <BaseLayout>
-      <div className="bg-main px-4 py-5">
-        <div className="bg-white rounded-4">
-          <div className="py-4 px-5">
-            <div className="d-flex justify-content-between mt-2 mb-4">
-              <div className="d-flex align-items-center">
-                <Image
-                  src="/images/png/employee-select.png"
-                  alt="Categoría"
-                  width={60}
-                  height={60}
-                  className="me-3 img-fluid"
-                />
-                <h1 className="fw-bold fs-3">Entradas</h1>
-              </div>
-              <div className="d-flex align-items-center">
-                <SearchPurchase search={searchPurchase} />
-              </div>
-            </div>
-            {entrances !== null ? (
-              <Table
-                data={entrances.data}
-                colums={colums}
-                crudButtons
-                customButton={false}
-                customButtonSale={false}
-                customButtonTitle={""}
-                customFunction={() => {}}
-                editFunction={() => {}}
-                deleteFunction={() => {}}
-              />
-            ) : (
-              <h2>No hay Entrada de Productos</h2>
-            )}
-            <Pagination
-              actualPage={entrances?.actualPage}
-              nextPage={entrances?.nextPage}
-              totalPage={entrances?.totalPages}
-              prevPage={entrances?.prevPage}
-              getContentFn={getEntrances}
-            />
-            <Modal
-              title="Entrada"
-              type={"CREATE"}
-              isOpen={isOpenModal}
-              handleCloseModal={handleCloseModal}
-            >
-              {purchase !== null ? (
-                <Form
-                  data={purchase}
-                  checkEntrance={checkEntrance}
-                  handleClick={saveEntrance}
-                />
-              ) : null}
-            </Modal>
-          </div>
-        </div>
-      </div>
-    </BaseLayout>
-  );
+    //   handleOpenModal();
+    // };
+
+    const handleDeleteEntrance = async (id: string): Promise<void> => {
+        await entranceService
+            .delete(id)
+            .then((res) => {
+                Swal.fire(
+                    "Eliminado!",
+                    "El registro fue eliminado con éxito",
+                    "success"
+                );
+                getEntrances();
+            })
+            .catch((err) => {
+                Swal.fire({
+                    text: err.message,
+                    icon: "error",
+                });
+            });
+    };
+
+    useEffect(() => {
+        getEntrances();
+    }, [purchase, setPurchase]);
+
+    useEffect(() => {
+        getEntrances();
+    }, [purchase, setPurchase]);
+
+    useEffect(() => {}, [detailEntrance, purchase, setPurchase]);
+
+    return (
+        <BaseLayout>
+            <AdminMain>
+                <div className="bg-main px-4 py-5">
+                    <div className="bg-white rounded-4">
+                        <div className="py-4 px-5">
+                            <div className="d-flex justify-content-between mt-2 mb-4">
+                                <div className="d-flex align-items-center">
+                                    <Image
+                                        src="/images/png/employee-select.png"
+                                        alt="Categoría"
+                                        width={60}
+                                        height={60}
+                                        className="me-3 img-fluid"
+                                    />
+                                    <h1 className="fw-bold fs-3">Entradas</h1>
+                                </div>
+                                <div className="d-flex align-items-center">
+                                    <SearchPurchase search={searchPurchase} />
+                                </div>
+                            </div>
+                            {entrances?.data && entrances.data.length > 0 ? (
+                                <Table
+                                    data={entrances?.data}
+                                    colums={colums}
+                                    crudButtons
+                                    isEdit={false}
+                                    customButton={false}
+                                    customButtonSale={false}
+                                    customButtonTitle={""}
+                                    customFunction={() => {}}
+                                    editFunction={() => {}}
+                                    deleteFunction={handleDeleteEntrance}
+                                />
+                            ) : (
+                                <h2>No hay Entrada de Productos</h2>
+                            )}
+                            <Pagination
+                                actualPage={entrances?.actualPage}
+                                nextPage={entrances?.nextPage}
+                                totalPage={entrances?.totalPages}
+                                prevPage={entrances?.prevPage}
+                                getContentFn={getEntrances}
+                            />
+                            <Modal
+                                title="Entrada"
+                                type={"CREATE"}
+                                isOpen={isOpenModal}
+                                handleCloseModal={handleCloseModal}
+                            >
+                                {purchase !== null ? (
+                                    <Form
+                                        data={purchase}
+                                        checkEntrance={checkEntrance}
+                                        handleClick={saveEntrance}
+                                    />
+                                ) : null}
+                            </Modal>
+                        </div>
+                    </div>
+                </div>
+            </AdminMain>
+        </BaseLayout>
+    );
 }
 
 export default Entrance;
