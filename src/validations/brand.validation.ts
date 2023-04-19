@@ -4,7 +4,7 @@ export const BrandFormSchema = Yup.object()
   .shape({
     name: Yup.string()
       .required("Debe llenar el campo Nombre")
-      .min(4, "4 caracteres como mínimo")
+      .min(3, "4 caracteres como mínimo")
       .max(20, "20 caracteres como máximo"),
   })
   .optional();

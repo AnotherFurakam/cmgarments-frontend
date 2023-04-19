@@ -5,7 +5,14 @@ import Tabule from "./styled-component/Table";
 import TableBody from "./styled-component/TableBody";
 import TableActionButton from "./styled-component/TableActionButton";
 import { MdEdit } from "react-icons/md";
-import { BsBank, BsCardImage, BsEye, BsImages, BsInfoCircle, BsXLg, BsZoomIn } from "react-icons/bs";
+import {
+  BsBank,
+  BsEye,
+  BsImages,
+  BsInfoCircle,
+  BsXLg,
+  BsZoomIn,
+} from "react-icons/bs";
 // import { FaCog } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { IoEyeSharp } from "react-icons/io5";
@@ -18,7 +25,7 @@ export interface TableInterface {
   customButtonSale?: boolean;
   customButtonTitle: string;
   isDelete?: Boolean;
-  isEdit?: Boolean;
+  isOptions?: Boolean;
   editFunction: (id: any) => void;
   deleteFunction: (id: any) => void;
   customFunction: (id: any) => void;
@@ -30,9 +37,9 @@ const Table: React.FC<TableInterface> = ({
   crudButtons = true,
   customButton = false,
   customButtonSale = false,
-  isDelete = false ,
-  isEdit = true,
+  isDelete = false,
   customButtonTitle = "Título del botón",
+  isOptions = true,
   editFunction,
   deleteFunction,
   customFunction,
@@ -41,7 +48,7 @@ const Table: React.FC<TableInterface> = ({
     editFunction(id);
   };
 
-  const handleDelete = (id: any, bol: Boolean) => {    
+  const handleDelete = (id: any, bol: Boolean) => {
     if (bol) {
       Swal.fire({
         title: "El registro ya está eliminado",
@@ -51,21 +58,21 @@ const Table: React.FC<TableInterface> = ({
         iconColor: "#ffc15d",
       });
     } else {
-    Swal.fire({
-      title: "¿Esta seguro de eliminar el registro?",
-      text: "Este tipo de cambios no son reversibles",
-      icon: "question",
-      cancelButtonColor: "#FF5151",
-      showCancelButton: true,
-      confirmButtonColor: "#007BFF",
-      confirmButtonText: "Si, elimínalo",
-      cancelButtonText: "Cancelar",
-      iconColor: "#ffc15d",      
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteFunction(id);
-      }
-    });
+      Swal.fire({
+        title: "¿Esta seguro de eliminar el registro?",
+        text: "Este tipo de cambios no son reversibles",
+        icon: "question",
+        cancelButtonColor: "#FF5151",
+        showCancelButton: true,
+        confirmButtonColor: "#007BFF",
+        confirmButtonText: "Si, elimínalo",
+        cancelButtonText: "Cancelar",
+        iconColor: "#ffc15d",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteFunction(id);
+        }
+      });
     }
   };
 
@@ -84,7 +91,7 @@ const Table: React.FC<TableInterface> = ({
                   {column}
                 </th>
               ))}
-            <th>OPCIONES</th>
+            {crudButtons  || customButtonSale && <th>OPCIONES</th>}
           </tr>
         </TableHead>
         <TableBody>
@@ -124,50 +131,39 @@ const Table: React.FC<TableInterface> = ({
                       )}
                     {crudButtons ? (
                       <>
+                        {customButtonSale ? (
+                          <TableActionButton
+                            type="button"
+                            color="#3d9d53"
+                            onClick={() =>
+                              handleCustomAction(Object.values<any>(d)[0])
+                            }
+                          >
+                            <IoEyeSharp color="#fff" size={35} />
+                          </TableActionButton>
+                        ) : (
+                          <TableActionButton
+                            type="button"
+                            color="#000000"
+                            onClick={() => handleEdit(Object.values<any>(d)[0])}
+                          >
+                            <MdEdit color="#fff" size={35} />
+                          </TableActionButton>
+                        )}
+                        <TableActionButton
+                          type="button"
+                          color={d.is_delete ? "#690d0d" : "#BD4949"}
+                          onClick={() =>
+                            handleDelete(Object.values<any>(d)[0], d.is_delete)
+                          }
+                        >
+                          {d.is_delete ? (
+                            <FaBan color="#fff" size={35} />
+                          ) : (
+                            <BsXLg color="#fff" size={35} />
+                          )}
+                        </TableActionButton>
                       
-                      {isEdit ? (
-                          <>
-                            <TableActionButton
-                          type="button"
-                          color="#111D13"
-                          onClick={() => handleEdit(Object.values<any>(d)[0])}
-                        >
-                          <MdEdit color="#fff" size={35} />
-                        </TableActionButton>
-                        <TableActionButton
-                        type="button"
-                        color={d.is_delete ?(
-                              "#690d0d"
-                            ):(
-                              "#BD4949"
-                            )}
-                        onClick={() => handleDelete(Object.values<any>(d)[0], d.is_delete)}
-                      >
-                        {d.is_delete ?(
-                              <FaBan color="#fff" size={35} />
-                            ):(
-                              <BsXLg color="#fff" size={35} />
-                            )}
-                      </TableActionButton>
-                          </>
-                          
-                      ):(
-                        <TableActionButton
-                          type="button"
-                          color={d.is_delete ?(
-                                "#690d0d"
-                              ):(
-                                "#BD4949"
-                              )}
-                          onClick={() => handleDelete(Object.values<any>(d)[0], d.is_delete)}
-                        >
-                          {d.is_delete ?(
-                                <FaBan color="#fff" size={35} />
-                              ):(
-                                <BsXLg color="#fff" size={35} />
-                              )}
-                        </TableActionButton>
-                      )}
                           <p></p>
                       </>
                     ):(
