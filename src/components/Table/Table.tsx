@@ -7,6 +7,7 @@ import TableActionButton from "./styled-component/TableActionButton";
 import { MdEdit } from "react-icons/md";
 import {
   BsBank,
+  BsEye,
   BsImages,
   BsInfoCircle,
   BsXLg,
@@ -90,7 +91,7 @@ const Table: React.FC<TableInterface> = ({
                   {column}
                 </th>
               ))}
-            {crudButtons && <th>OPCIONES</th>}
+            {crudButtons  || customButtonSale && <th>OPCIONES</th>}
           </tr>
         </TableHead>
         <TableBody>
@@ -162,7 +163,7 @@ const Table: React.FC<TableInterface> = ({
                             <BsXLg color="#fff" size={35} />
                           )}
                         </TableActionButton>
-                      )}
+                      
                           <p></p>
                       </>
                     ):(

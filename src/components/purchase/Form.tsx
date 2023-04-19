@@ -1,61 +1,61 @@
-import { IBrand } from "@/models/brand.interface";
-import { ICategory } from "@/models/category.interface";
-import { IProduct } from "@/models/product.interface";
-import { category as categoryService } from "@/services/category.service";
-import { category } from "@/services/category.service";
-import { brand } from "@/services/brand.service";
-import { productService } from "@/services/product.service";
-import { ProductFormSchema } from "@/validations/product.validation";
-import { Field, Formik, FormikHelpers, FormikProps, useFormik } from "formik";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import FormErrorMessage from "../styled-component/forms/FormErrorMessage";
-import InputText from "../styled-component/forms/InputText";
-import SubmitButton from "../styled-component/forms/SubmitButton";
-import FormStyled from "./styled-components/FomStyled";
-import { Console } from "console";
-import { string } from "yup";
-import { IPurchase } from "@/models/purchase.interface";
-import { ISupplier } from "@/models/supplier.interface";
-import { supplierService } from "@/services/supplier.service";
-import { purchaseService } from "@/services/purchase.service";
-import { PurchaseFormSchema } from "@/validations/purchase.validation";
+    import { IBrand } from "@/models/brand.interface";
+    import { ICategory } from "@/models/category.interface";
+    import { IProduct } from "@/models/product.interface";
+    import { category as categoryService } from "@/services/category.service";
+    import { category } from "@/services/category.service";
+    import { brand } from "@/services/brand.service";
+    import { productService } from "@/services/product.service";
+    import { ProductFormSchema } from "@/validations/product.validation";
+    import { Field, Formik, FormikHelpers, FormikProps, useFormik } from "formik";
+    import Image from "next/image";
+    import { useEffect, useState } from "react";
+    import Swal from "sweetalert2";
+    import FormErrorMessage from "../styled-component/forms/FormErrorMessage";
+    import InputText from "../styled-component/forms/InputText";
+    import SubmitButton from "../styled-component/forms/SubmitButton";
+    import FormStyled from "./styled-components/FomStyled";
+    import { Console } from "console";
+    import { string } from "yup";
+    import { IPurchase } from "@/models/purchase.interface";
+    import { ISupplier } from "@/models/supplier.interface";
+    import { supplierService } from "@/services/supplier.service";
+    import { purchaseService } from "@/services/purchase.service";
+    import { PurchaseFormSchema } from "@/validations/purchase.validation";
 
-export interface FormInterface {
-    type: string;
-    title: string;
-    data: IPurchase;
-    handleCloseModal: () => void;
-    getPurchase: () => Promise<void>;
-}
+    export interface FormInterface {
+        type: string;
+        title: string;
+        data: IPurchase;
+        handleCloseModal: () => void;
+        getPurchase: () => Promise<void>;
+    }
 
-export const Form: React.FC<FormInterface> = ({
-    type = "CREATE",
-    title,
-    data,
-    handleCloseModal,
-    getPurchase,
-}) => {
-    const initialValues: IPurchase = {
-        supplier: data.id_supplier?.id_supplier ?? "",
-        description: data.description ?? "",
-        total_price: data.total_price ?? 0,
-        date_purchase: data.date_purchase ?? "",
-    };
+    export const Form: React.FC<FormInterface> = ({
+        type = "CREATE",
+        title,
+        data,
+        handleCloseModal,
+        getPurchase,
+    }) => {
+        const initialValues: IPurchase = {
+            supplier: data.id_supplier?.id_supplier ?? "",
+            description: data.description ?? "",
+            total_price: data.total_price ?? 0,
+            date_purchase: data.date_purchase ?? "",
+        };
 
-    const [suppliers, setSuppliers] = useState<ISupplier[] | null>(null);
+        const [suppliers, setSuppliers] = useState<ISupplier[] | null>(null);
 
-    const handleGetSuppliers = async () => {
-        setSuppliers((await supplierService.getAll()).data);
-    };
+        const handleGetSuppliers = async () => {
+            setSuppliers((await supplierService.getAll()).data);
+        };
 
-    const handleSubmit = async (
-        values: IPurchase,
-        helpers: FormikHelpers<IPurchase>
-    ) => {
-        // console.log("Hola como estas");
-        // console.log(values);
+        const handleSubmit = async (
+            values: IPurchase,
+            helpers: FormikHelpers<IPurchase>
+        ) => {
+            // console.log("Hola como estas");
+            // console.log(values);
 
         if (type === "CREATE") {
             await purchaseService
@@ -82,6 +82,7 @@ export const Form: React.FC<FormInterface> = ({
             const idPurchase = data.id_purchase;
             console.log(idPurchase);
             if (!idPurchase) return;
+
             await purchaseService
                 .update(values, idPurchase)
                 .then((res) => {
@@ -103,9 +104,9 @@ export const Form: React.FC<FormInterface> = ({
         }
     };
 
-    useEffect(() => {
-        handleGetSuppliers();
-    }, []);
+        useEffect(() => {
+            handleGetSuppliers();
+        }, [suppliers, setSuppliers]);
 
     return (
         <Formik
@@ -180,6 +181,7 @@ export const Form: React.FC<FormInterface> = ({
                                     component={"p"}
                                 />
                             </div>
+
                             <div className="mb-3">
                                 <label
                                     htmlFor="id_supplier"
