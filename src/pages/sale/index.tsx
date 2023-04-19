@@ -15,6 +15,7 @@ import TableActionButton from "@/components/Table/styled-component/TableActionBu
 import { BsImages } from "react-icons/bs";
 import Pagination from "@/components/Pagination/Pagination";
 import { IGetAll } from "@/models/global.interface";
+import { AdminMain } from "@/components/styled-component/AdminMain";
 
 //? nombres de las columnas
 //* la key es la key de las categories
@@ -75,6 +76,7 @@ function Sale() {
     };
 
     const handleDeleteSale = async (id: string): Promise<void> => {
+        console.log(id)
         await SaleService
             .delete(id)
             .then((res) => {
@@ -99,6 +101,7 @@ function Sale() {
 
     return (
         <BaseLayout>
+        <AdminMain>
             <div className="bg-main px-4 py-5">
                 <div className="bg-white rounded-4">
                     <div className="py-4 px-5">
@@ -118,7 +121,7 @@ function Sale() {
                         <Table
                             data={sale?.data ? mapSaleData(sale.data) : null}
                             colums={colums}
-                            crudButtons
+                            crudButtons={false}
                             customButton={false}
                             customButtonSale={true}
                             isDelete={deleteBoolean}                            
@@ -145,6 +148,7 @@ function Sale() {
                     </div>
                 </div>
             </div>
+            </AdminMain>
         </BaseLayout>
     );
 }

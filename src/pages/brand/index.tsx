@@ -34,10 +34,14 @@ const BrandPage = () => {
 
   // obtener categorias
   const getBrands = async (page: number = 1): Promise<void> => {
-    const brand = await brandService.getAll(page);
-    // console.log(brand.data);
-
-    setBrand(brand);
+    try {
+      const brand = await brandService.getAll(page);
+      // console.log(brand.data);
+  
+      setBrand(brand);
+    } catch (error) {
+      
+    }
   };
 
   // funcion para cerra el modal
@@ -83,6 +87,7 @@ const BrandPage = () => {
   return (
     <BaseLayout>
       <AdminMain>
+      <div className="bg-main px-4 py-5">
         <div className="bg-white rounded-4">
           <div className="py-4 px-5">
             <div className="d-flex justify-content-between mt-2 mb-4">
@@ -130,6 +135,7 @@ const BrandPage = () => {
               />
             </Modal>
           </div>
+        </div>
         </div>
       </AdminMain>
     </BaseLayout>

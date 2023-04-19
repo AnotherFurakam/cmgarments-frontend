@@ -21,7 +21,7 @@ export interface TableInterface {
   data: any[] | null | undefined;
   crudButtons: boolean;
   customButton: boolean;
-  customButtonSale: boolean;
+  customButtonSale?: boolean;
   customButtonTitle: string;
   isDelete?: Boolean;
   isOptions?: Boolean;
@@ -114,7 +114,21 @@ const Table: React.FC<TableInterface> = ({
                     );
                   })}
                   <td className="d-flex justify-content-center gap-2">
-                    {crudButtons && (
+                    {customButtonSale && (
+                        <>
+                        <TableActionButton
+                          type="button"
+                          color="#246fff"
+                          onClick={() =>
+                            handleCustomAction(Object.values<any>(d)[0])
+                          }
+                        >
+                          {/* <span>{customButtonTitle}</span> */}
+                          <BsEye color="#fff" size={35} />
+                        </TableActionButton>
+                        </>
+                      )}
+                    {crudButtons ? (
                       <>
                         {customButtonSale ? (
                           <TableActionButton
@@ -148,19 +162,27 @@ const Table: React.FC<TableInterface> = ({
                             <BsXLg color="#fff" size={35} />
                           )}
                         </TableActionButton>
+                      )}
+                          <p></p>
                       </>
-                    )}
-                    {customButton && (
-                      <TableActionButton
-                        type="button"
-                        color="#246fff"
-                        onClick={() =>
-                          handleCustomAction(Object.values<any>(d)[0])
-                        }
-                      >
-                        {/* <span>{customButtonTitle}</span> */}
-                        <BsImages color="#fff" size={35} />
-                      </TableActionButton>
+                    ):(
+                      <div>
+                          <TableActionButton
+                          type="button"
+                          color={d.is_delete ?(
+                                "#690d0d"
+                              ):(
+                                "#BD4949"
+                              )}
+                          onClick={() => handleDelete(Object.values<any>(d)[0], d.is_delete)}
+                        >
+                          {d.is_delete ?(
+                                <FaBan color="#fff" size={35} />
+                              ):(
+                                <BsXLg color="#fff" size={35} />
+                              )}
+                        </TableActionButton>
+                      </div>
                     )}
                   </td>
                 </tr>

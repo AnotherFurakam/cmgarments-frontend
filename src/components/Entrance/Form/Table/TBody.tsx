@@ -11,7 +11,7 @@ export interface FormInterface {
 const TBody: React.FC<FormInterface> = ({ data, checkEntrance }) => {
   const saveEntrance = (detail: IPurchaseDetail) => {
     const entrance: IEntrance = {
-      description: `${detail.id_product.name} - ${detail.id_product.color} - ${detail.id_product.brand.name}`,
+      description: `${detail.id_product.name} - ${detail.id_product.size} - ${detail.id_product.color} - ${detail.id_product.brand.name}`,
       units: detail.units,
       unit_cost: detail.price,
       id_purchase_detail: detail.id_purchase_detail,

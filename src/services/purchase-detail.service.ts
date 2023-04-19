@@ -28,6 +28,15 @@ const getAllByIdPurchase = async (
   return res.data;
 };
 
+const getone = async (
+  id: string | undefined ,
+): Promise<IPurchaseDetail> => {
+  const res = await Api.get(
+    `/purchase-detail/${id}`
+  );
+  return res.data;
+};
+
 //? actualizar compra
 const update = async (
   body: IPurchaseDetailPost,
@@ -47,6 +56,7 @@ const purchaseDetailService = {
   update,
   delete: _delete,
   getAllByIdPurchase,
+  getone,
 };
 
 export { purchaseDetailService };

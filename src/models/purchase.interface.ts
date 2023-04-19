@@ -49,6 +49,7 @@ export interface IPurchaseDetail {
 interface IDProduct {
   brand: Brand;
   category: Category;
+  size: string;
   color: string;
   name: string;
 }

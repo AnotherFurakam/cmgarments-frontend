@@ -1,0 +1,43 @@
+.container-sidebar {
+    overflow-y: auto;
+    height: calc(100% - 180px);
+}
+.sidebar__list {
+    overflow-y: auto;
+    height: calc(100% - 0px); 
+    width: 100%;
+    list-style: none;
+    padding-left: 10px;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+.sidebar__list::-webkit-scrollbar {
+    display: none; 
+}
+.bg-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.bg-white {
+    flex: 1;
+}
+.sidebar__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.sidebar__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.sidebar__logout {
+    margin-top: auto;
+}
+
+
+
+
