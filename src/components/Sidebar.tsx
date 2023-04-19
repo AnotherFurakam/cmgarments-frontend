@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { SidebarContext } from "./SidebarContext";
+import Router from "next/router";
 import styles from "./Sidebar.module.css";
 const sidebarItems = [
   {
@@ -46,18 +47,8 @@ const sidebarItems = [
     icon: "/employee.png",
   },
   {
-    name: "Clientes",
-    href: "/clients",
-    icon: "/clients.png",
-  },
-  {
     name: "Compras",
     href: "/purchase",
-    icon: "/purchase.png",
-  },
-  {
-    name: "Ventas",
-    href: "/sale",
     icon: "/purchase.png",
   },
 ];
@@ -68,6 +59,10 @@ export default function Sidebar() {
 
   const { isCollapsedSidebar, toogleSidebarCollapsedHandler } =
     useContext(SidebarContext);
+
+  const handleClick = () => {
+    Router.push("/login/admin");
+  };
 
   useEffect(() => {
     const htmlBody = document.querySelector(".content");
@@ -131,7 +126,12 @@ export default function Sidebar() {
                   height={heightIco}
                 />
               </span>
-              <span className="sidebar__name">Cerrar Sesión</span>
+              <button
+                style={{ border: "none", backgroundColor: "inherit" }}
+                onClick={handleClick}
+              >
+                <span className="sidebar__name">Cerrar Sesión</span>
+              </button>
             </Link>
           </div>
           <div className="sidebar__logo-name align-items-center py-2"></div>

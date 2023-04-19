@@ -82,7 +82,6 @@ export const Form: React.FC<FormInterface> = ({
             const idPurchase = data.id_purchase;
             console.log(idPurchase);
             if (!idPurchase) return;
-
             await purchaseService
                 .update(values, idPurchase)
                 .then((res) => {
@@ -181,7 +180,6 @@ export const Form: React.FC<FormInterface> = ({
                                     component={"p"}
                                 />
                             </div>
-
                             <div className="mb-3">
                                 <label
                                     htmlFor="id_supplier"
