@@ -107,6 +107,7 @@ function Entrance() {
       const data = await entranceService.create(d);
     });
     handleCloseModal();
+    getEntrances();
   };
 
   useEffect(() => {
@@ -145,7 +146,7 @@ function Entrance() {
               <Table
                 data={entrances.data}
                 colums={colums}
-                crudButtons
+                crudButtons={false}
                 customButton={false}
                 customButtonSale={false}
                 customButtonTitle={""}

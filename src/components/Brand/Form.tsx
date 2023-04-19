@@ -49,7 +49,7 @@ export const Form: React.FC<FormInterface> = ({
         .catch((err) => {
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.response.data.message,
+            text: "Ocurrio un error al enviar la información",
             icon: "error",
           });
         });
@@ -71,7 +71,7 @@ export const Form: React.FC<FormInterface> = ({
         .catch((err) => {
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.message,
+            text: "Ocurrio un error al enviar la información",
             icon: "error",
           });
         });

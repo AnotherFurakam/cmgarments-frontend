@@ -76,12 +76,11 @@ export const Form: React.FC<FormInterface> = ({
           console.log(err);
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.message,
+            text: "Ocurrio un error al enviar la información",
             icon: "error",
           });
         });
-    }
-    else if (type === "UPDATE") {
+    } else if (type === "UPDATE") {
       console.log("ACtualizando", values);
       const idPurchase = data.id_purchase;
       console.log(idPurchase);
@@ -101,7 +100,7 @@ export const Form: React.FC<FormInterface> = ({
         .catch((err) => {
           helpers.setSubmitting(false);
           Swal.fire({
-            text: err.message,
+            text: "Ocurrio un error al enviar la información",
             icon: "error",
           });
         });
@@ -158,7 +157,7 @@ export const Form: React.FC<FormInterface> = ({
               </div>
               <div className="mb-3">
                 <label htmlFor="date_purchase" className="fw-semibold pb-2">
-                  Precio
+                  Fecha de Compra
                 </label>
                 <InputText
                   id="date_purchase"
