@@ -16,6 +16,7 @@ import { purchaseService } from "@/services/purchase.service";
 import { IGetPurchase } from "@/models/purchase.interface";
 import { purchaseDetailService } from "@/services/purchase-detail.service";
 import { AdminMain } from "@/components/styled-component/AdminMain";
+import { Console } from "console";
 
 // //* interface para la información de la tabla
 // interface ICleanEntrance {
@@ -174,8 +175,12 @@ function Entrance() {
                 getEntrances();
             })
             .catch((err) => {
-                Swal.fire({
-                    text: err.message,
+                console.log(err)
+                console.log(err.response.data.message)
+                Swal.fire(
+                {
+                    title: "Error al Eliminar",
+                    text: err.response.data.message,
                     icon: "error",
                 });
             });
@@ -216,10 +221,11 @@ function Entrance() {
                                 <Table
                                     data={entrances?.data}
                                     colums={colums}
-                                    crudButtons
+                                    crudButtons={false}
                                     isEdit={false}
                                     customButton={false}
                                     customButtonSale={false}
+                                    noOption={false}
                                     customButtonTitle={""}
                                     customFunction={() => {}}
                                     editFunction={() => {}}
