@@ -56,6 +56,11 @@ const sidebarItems = [
     href: "/sale",
     icon: "/purchase.png",
   },
+  {
+    name: "Clientes",
+    href: "/clients",
+    icon: "/purchase.png",
+  },
 ];
 
 export default function Sidebar() {
@@ -103,7 +108,7 @@ export default function Sidebar() {
             </div>
           </div>
           <div className={`container-sidebar d-flex align-items-center h-80`}>
-          <ul className={`${styles.sidebar__list} w-100`}>
+            <ul className={`${styles.sidebar__list} w-100`}>
               {sidebarItems.map((item) => (
                 <li className="sidebar__item" key={item.name}>
                   <Link href={item.href} className="sidebar__link">
